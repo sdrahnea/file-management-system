@@ -28,7 +28,7 @@ This project requires Java 1.8, PostgreSQL and Maven.
 Install PostgreSQL. it is required to create a database:
 
 ```
-CREATE DATABSE dms;
+CREATE DATABSE fms;
 ```
 
 Note: in case that you run the application starting with MySQL 8.0.4, please execute the following query:
@@ -72,7 +72,7 @@ In case if application is run in a linux based instance, please create the follo
 
 To run the application we have the following options:
 ```
-nohub java -jar file-management-system-1.0.3.jar --spring.config.location=/app/config/application.properties &
+nohub java -jar file-management-system-1.0.0.jar --spring.config.location=/app/config/application.properties &
 ```
 
 To show last NUM_OF_RECORDS from a FILE_NAME linux command:
@@ -86,7 +86,7 @@ We did not test how the application works on PRODUCTION on WINDOWS environment.
 
 To run application, please run this command:
 ```
-java -jar D:\projects\app\file-management-system-1.0.3.jar --spring.config.location=D:/projects/app/config/application.properties
+java -jar D:\projects\app\file-management-system-1.0.0.jar --spring.config.location=D:/projects/app/config/application.properties
 ```
 
 ## Swagger usage
