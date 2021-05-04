@@ -4,18 +4,25 @@ File Management System is a hybrid file storing system. The file information is 
 The file content is located into logical disk. The system is exposed via API.
 
 ## Summary
-* Getting Started (Prerequisites, Installing)
-* Running the tests
-* Deployment
-* Built With
-* Do you have any issue?
-* Contributing
-* Versioning
-* Authors
-* License
-* Donation
+1. Getting Started (Prerequisites, Installing)
+    - Prerequisites
+    - Database installation
+        - H2
+        - MySQL
+        - PostgreSQL
+2. Running the tests
+3. Deployment
+   - Deployment & run on LINUX environment
+   - Deployment & run on WINDOWS environment
+4. Swagger usage
+5. Built With
+6. Contributing
+7. Versioning
+8. Authors
+9. License
+10. Donation
 
-## Getting Started
+## 1. Getting Started
 
 Clone or download a copy of this project.
 
@@ -23,9 +30,12 @@ Clone or download a copy of this project.
 
 This project requires Java 1.8, PostgreSQL and Maven.
 
-### Installing
+### Database installation
 
-Install PostgreSQL. it is required to create a database:
+#### H2DB
+
+
+#### MySQL 
 
 ```
 CREATE DATABSE fms;
@@ -36,6 +46,9 @@ Note: in case that you run the application starting with MySQL 8.0.4, please exe
 ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PASSWORD}';
 -- where ${USER} and ${PASSWORD} should be provided. 
 ```
+
+#### Postgres
+Install PostgreSQL. it is required to create a database:
 
 Please, run the following commands if it is the case:
 ```
@@ -52,11 +65,11 @@ To create the JAR file please use the following command:
 mvn clean package
 ```
 
-## Running the tests
+## 2. Running the tests
 
 This project does not have any kind of tests :).
 
-## Deployment
+## 3. Deployment
 
 If the build (the jar file) is ready then the application can be run. Please, use the following command to run the application:
 ```
@@ -89,13 +102,13 @@ To run application, please run this command:
 java -jar D:\projects\app\file-management-system-1.0.0.jar --spring.config.location=D:/projects/app/config/application.properties
 ```
 
-## Swagger usage
+## 4. Swagger usage
 You can use swagger for testing proposes:
 ```
 URL: APP_HOST/swagger-ui.html  . For example:  http://localhost:8081/swagger-ui.html
 ```
 
-## Built With
+## 5. Built With
 
 * [Java](https://www.java.com/en/download/) - Java technology allows you to work and play in a secure computing environment. Java allows you to play online games, chat with people around the world, calculate your mortgage interest, and view images in 3D, just to name a few.
 * [Spring Security](https://spring.io/projects/spring-security) - Spring Security is a powerful and highly customizable authentication and access-control framework. It is the de-facto standard for securing Spring-based applications.
@@ -105,13 +118,21 @@ URL: APP_HOST/swagger-ui.html  . For example:  http://localhost:8081/swagger-ui.
 * [PostgreSQL](https://www.postgresql.org/) - PostgreSQL, also known as Postgres, is a free and open-source relational database management system (RDBMS) emphasizing extensibility and technical standards compliance. It is designed to handle a range of workloads, from single machines to data warehouses or Web services with many concurrent users. It is the default database for macOS Server, and is also available for Linux, FreeBSD, OpenBSD, and Windows. 
 * [Maven](https://maven.apache.org/) - Apache Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information. 
 
-## Contributing
+## 6. Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
+## 7. Versioning
 
 We use [SemVer](http://semver.org/) for versioning.
 
-## Donation
+## 8. Authors
+Sergiu Drahnea is the author and the person who developed the system. If you wish to contact 
+then please drop a message to my LinkedIn account: https://www.linkedin.com/in/sergiu-drahnea/
+
+## 9. License
+`MIT License` in general. 
+If you want to run the system in production and have questions or need advices then please drop a message.
+
+## 10. Donation
 * [PayPal](https://www.paypal.me/sdrahnea) - any donation is welcomed in case that you was pleased with this work :p
