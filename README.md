@@ -35,7 +35,7 @@ This project requires Java 1.8, Maven and at least one database (PostgreS, H2, M
 #### H2
 No installation is required.
 The `spring.datasource.url` is the one required property which should be set. By default, the 
-username is `sa` with empty password. Two modes: in memory and file storage. See the `application.property`
+username is `sa` with empty password. Two modes: in memory and file storage. See the `application.properties`
 file for more details related configuration.
 
 #### MySQL 
