@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.1] - 2021-05-XX [Unreleased]
 ### Added
 - storage to H2 database
+- use tenant instead of environment
 
 ### Fixed
 - bug related to multipart file config
