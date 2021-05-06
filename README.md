@@ -5,11 +5,11 @@ The file content is located into logical disk. The system is exposed via API.
 
 ## Summary
 1. Getting Started (Prerequisites, Installing)
-    - Prerequisites
-    - Database installation
-        - H2
-        - MySQL
-        - PostgreSQL
+    - 1.1 Prerequisites
+    - 1.2 Database installation
+        - 1.2.1 H2
+        - 1.2.2 MySQL
+        - 1.2.3 PostgreSQL
 2. Running the tests
 3. Deployment
    - Deployment & run on LINUX environment
