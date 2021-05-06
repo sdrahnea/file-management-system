@@ -122,7 +122,7 @@ public class DocumentFileService {
         documentFile.setDocumentId(documentId);
         documentFile.setDirectory(directoryName);
         documentFile.setPath(filePath);
-        documentFile.setEnvironment(environment);
+        documentFile.setTenant(environment);
 
         log.info("Save to DB the document id: {}", documentId);
 

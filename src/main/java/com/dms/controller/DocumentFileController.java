@@ -24,35 +24,35 @@ public class DocumentFileController {
         this.documentFileService = documentFileService;
     }
 
-    @PostMapping("uploadMultipartFile/{documentId}/{environment}")
+    @PostMapping("uploadMultipartFile/{documentId}/{tenant}")
     @ApiOperation("upload functionality")
     public String upload(@PathVariable String documentId,
-                         @PathVariable String environment,
+                         @PathVariable String tenant,
                          @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload document id: {}", documentId);
 
-        return documentFileService.upload(multipartFile, documentId, environment);
+        return documentFileService.upload(multipartFile, documentId, tenant);
     }
 
-    @PostMapping("upload/{documentId}/{environment}")
+    @PostMapping("upload/{documentId}/{tenant}")
     @ApiOperation("upload functionality in case of byte array")
     public String upload(@PathVariable String documentId,
-                         @PathVariable String environment,
+                         @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id as byte array: {}", documentId);
 
-        return documentFileService.upload(byteArrayResource, documentId, environment);
+        return documentFileService.upload(byteArrayResource, documentId, tenant);
     }
 
-    @PostMapping("upload/{documentId}/{directory}/{environment}")
+    @PostMapping("upload/{documentId}/{directory}/{tenant}")
     @ApiOperation("upload functionality in case of byte array and directory name")
     public String upload(@PathVariable String documentId,
                          @PathVariable String directory,
-                         @PathVariable String environment,
+                         @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id {} for directory: {}", documentId, directory);
 
-        return documentFileService.upload(byteArrayResource, documentId, directory, environment);
+        return documentFileService.upload(byteArrayResource, documentId, directory, tenant);
     }
 
     @GetMapping(value = "download/{documentId}")

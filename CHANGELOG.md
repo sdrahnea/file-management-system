@@ -1,12 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.0.2] - 2021-05-XX [Unreleased]
 ### Added
--
+- file storage strategy
 
 ### Fixed
--
+- 
+
+## [1.0.1] - 2021-05-XX [Unreleased]
+### Added
+- storage to H2 database
+
+### Fixed
+- bug related to multipart file config
 
 ## [1.0.0] - 2021-05-04
 ### Added

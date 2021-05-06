@@ -26,8 +26,8 @@ public class DocumentFile {
     @Column(name = "path")
     private String path;
 
-    @Column(name = "environment")
-    private String environment;
+    @Column(name = "tenant")
+    private String tenant;
 
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,11 +71,11 @@ public class DocumentFile {
         this.directory = directory;
     }
 
-    public String getEnvironment() {
-        return environment;
+    public String getTenant() {
+        return tenant;
     }
 
-    public void setEnvironment(String environment) {
-        this.environment = environment;
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
     }
 }
