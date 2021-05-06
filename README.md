@@ -26,19 +26,19 @@ The file content is located into logical disk. The system is exposed via API.
 
 Clone or download a copy of this project.
 
-### Prerequisites
+### 1.1 Prerequisites
 
 This project requires Java 1.8, Maven and at least one database (PostgreS, H2, MySql).
 
-### Database installation
+### 1.2 Database installation
 
-#### H2
+#### 1.2.1 H2
 No installation is required.
 The `spring.datasource.url` is the one required property which should be set. By default, the 
 username is `sa` with empty password. Two modes: in memory and file storage. See the `application.properties`
 file for more details related configuration.
 
-#### MySQL 
+#### 1.2.2 MySQL 
 
 ```
 CREATE DATABSE fms;
@@ -50,7 +50,7 @@ ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PAS
 -- where ${USER} and ${PASSWORD} should be provided. 
 ```
 
-#### Postgres
+#### 1.2.3 Postgres
 Install PostgreSQL. it is required to create a database:
 
 Please, run the following commands if it is the case:
