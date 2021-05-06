@@ -28,12 +28,15 @@ Clone or download a copy of this project.
 
 ### Prerequisites
 
-This project requires Java 1.8, PostgreSQL and Maven.
+This project requires Java 1.8, Maven and at least one database (PostgreS, H2, MySql).
 
 ### Database installation
 
-#### H2DB
-
+#### H2
+No installation is required.
+The `spring.datasource.url` is the one required property which should be set. By default, the 
+username is `sa` with empty password. Two modes: in memory and file storage. See the `application.property`
+file for more details related configuration.
 
 #### MySQL 
 
