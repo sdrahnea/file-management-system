@@ -2,7 +2,7 @@ package com.fms.service;
 
 import com.fms.config.AppConfig;
 import com.fms.model.FileEntity;
-import com.fms.repository.DocumentFileRepository;
+import com.fms.repository.FileRepository;
 import com.fms.util.DateUtils;
 import com.fms.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,12 @@ import java.util.List;
 public class FileService {
 
     private final AppConfig appConfig;
-    private final DocumentFileRepository documentFileRepository;
+    private final FileRepository fileRepository;
 
     @Autowired
-    public FileService(AppConfig appConfig,
-                       DocumentFileRepository documentFileRepository) {
+    public FileService(AppConfig appConfig, FileRepository fileRepository) {
         this.appConfig = appConfig;
-        this.documentFileRepository = documentFileRepository;
+        this.fileRepository = fileRepository;
     }
 
     public String upload(MultipartFile multipartFile, String documentId, String tenant) {
@@ -83,7 +82,7 @@ public class FileService {
 
     public byte[] download(String documentId) {
         log.info("Find data for document id: {}", documentId);
-        List<FileEntity> fileEntityList = documentFileRepository.findByDocumentId(documentId.trim());
+        List<FileEntity> fileEntityList = fileRepository.findByDocumentId(documentId.trim());
 
         FileEntity fileEntity = null;
         if(!fileEntityList.isEmpty()) {
@@ -114,7 +113,7 @@ public class FileService {
 
         log.info("Save to DB the document id: {}", documentId);
 
-        return documentFileRepository.save(fileEntity);
+        return fileRepository.save(fileEntity);
     }
 
     private String computeAbsoluteFilePath(final String directoryName, final String documentId, final String tenant) {
