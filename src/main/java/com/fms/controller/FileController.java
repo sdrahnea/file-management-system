@@ -1,6 +1,6 @@
-package com.dms.controller;
+package com.fms.controller;
 
-import com.dms.service.DocumentFileService;
+import com.fms.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @Api("Document File Controller API")
-public class DocumentFileController {
+public class FileController {
 
-    private final DocumentFileService documentFileService;
+    private final FileService fileService;
 
     @Autowired
-    public DocumentFileController(DocumentFileService documentFileService) {
-        this.documentFileService = documentFileService;
+    public FileController(FileService fileService) {
+        this.fileService = fileService;
     }
 
     @PostMapping("uploadMultipartFile/{documentId}/{tenant}")
@@ -31,7 +31,7 @@ public class DocumentFileController {
                          @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload document id: {}", documentId);
 
-        return documentFileService.upload(multipartFile, documentId, tenant);
+        return fileService.upload(multipartFile, documentId, tenant);
     }
 
     @PostMapping("upload/{documentId}/{tenant}")
@@ -41,7 +41,7 @@ public class DocumentFileController {
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id as byte array: {}", documentId);
 
-        return documentFileService.upload(byteArrayResource, documentId, tenant);
+        return fileService.upload(byteArrayResource, documentId, tenant);
     }
 
     @PostMapping("upload/{documentId}/{directory}/{tenant}")
@@ -52,7 +52,7 @@ public class DocumentFileController {
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id {} for directory: {}", documentId, directory);
 
-        return documentFileService.upload(byteArrayResource, documentId, directory, tenant);
+        return fileService.upload(byteArrayResource, documentId, directory, tenant);
     }
 
     @GetMapping(value = "download/{documentId}")
@@ -60,7 +60,7 @@ public class DocumentFileController {
     public @ResponseBody byte[] download(@PathVariable String documentId) {
         log.info("Receive request to download document id: {}", documentId);
 
-        return documentFileService.download(documentId);
+        return fileService.download(documentId);
     }
 
 }

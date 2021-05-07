@@ -1,4 +1,4 @@
-package com.dms;
+package com.fms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,9 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableJpaRepositories
 @ComponentScan
-public class DocumentManagementSystemApplication {
+public class FileManagementSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DocumentManagementSystemApplication.class, args);
+        SpringApplication.run(FileManagementSystemApplication.class, args);
     }
 }

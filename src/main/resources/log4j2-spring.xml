@@ -33,7 +33,7 @@
             <AppenderRef ref="RollingFile" />
         </Root>
 
-        <Logger name="com.dms" level="trace"></Logger>
+        <Logger name="com.fms" level="trace"></Logger>
     </Loggers>
 
 </Configuration>

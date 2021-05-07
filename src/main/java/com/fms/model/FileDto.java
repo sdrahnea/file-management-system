@@ -1,13 +1,13 @@
-package com.dms.model;
+package com.fms.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class DocumentFileDto {
+public class FileDto {
 
     private MultipartFile file;
     private String contentId;
 
-    public DocumentFileDto(MultipartFile file, String contentId) {
+    public FileDto(MultipartFile file, String contentId) {
         this.file = file;
         this.contentId = contentId;
     }

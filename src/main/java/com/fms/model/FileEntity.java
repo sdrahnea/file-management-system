@@ -1,15 +1,15 @@
-package com.dms.model;
+package com.fms.model;
 
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * should store document name, or id
+ * should store file name, or id
  */
 
 @Entity
-@Table(name = "document_file")
-public class DocumentFile {
+@Table(name = "file_entity")
+public class FileEntity {
 
     private static final long serialVersionUID = -3009157732242241606L;
 
@@ -33,7 +33,7 @@ public class DocumentFile {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public DocumentFile(){
+    public FileEntity(){
         if (getCreatedDate() == null){
             setCreatedDate(new Date());
         }
