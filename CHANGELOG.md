@@ -3,15 +3,17 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.2] - 2021-05-XX [Unreleased]
 ### Added
-- file storage strategy
+- file storage strategy 
+- constraint file retrieve / store by tenant
 
 ### Fixed
 - 
 
-## [1.0.1] - 2021-05-XX [Unreleased]
+## [1.0.1] - 2021-05-07
 ### Added
 - storage to H2 database
 - use tenant instead of environment
+- add multi-tenant possibility
 
 ### Fixed
 - bug related to multipart file config
