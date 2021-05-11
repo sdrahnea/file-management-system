@@ -24,9 +24,9 @@ public class SpringFoxConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Document Management System API",
-                "Manage documents contents (upload/download/storage).",
-                "1.0.3",
+                "File Management System API",
+                "Manage file contents (upload/download/storage).",
+                "1.0.2",
                 "Terms of service",
                 null,
                 "License of API", "API license URL", Collections.emptyList());
