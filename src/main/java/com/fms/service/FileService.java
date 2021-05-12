@@ -55,11 +55,7 @@ public class FileService {
         final String filePath = computeAbsoluteFilePath(directoryName, documentId, tenant);
         FileEntity result = saveDocument(documentId, filePath, directoryName, tenant);
 
-        try {
-            Files.write(Paths.get(filePath), multipartFile.getByteArray());
-        } catch (Exception exception) {
-            log.error("Can not to save file: {} with exception: {}", filePath, exception);
-        }
+        saveFile(multipartFile, filePath);
 
         return result.getDocumentId();
     }
@@ -71,11 +67,7 @@ public class FileService {
         final String filePath = computeAbsoluteFilePath(directoryName, documentId, tenant);
         FileEntity result = saveDocument(documentId, filePath, directoryName, tenant);
 
-        try {
-            Files.write(Paths.get(filePath), multipartFile.getByteArray());
-        } catch (Exception exception) {
-            log.error("Can not to save file: {} with exception: {}", filePath, exception);
-        }
+        saveFile(multipartFile, filePath);
 
         return result.getDocumentId();
     }
@@ -84,7 +76,7 @@ public class FileService {
         log.info("Find data for document id: {}", documentId);
         List<FileEntity> fileEntityList = fileRepository.findByDocumentId(documentId.trim());
 
-        FileEntity fileEntity = null;
+        FileEntity fileEntity;
         if(!fileEntityList.isEmpty()) {
             fileEntity = fileEntityList.get(0);
         } else {
@@ -99,6 +91,14 @@ public class FileService {
         }
 
         return bytes;
+    }
+
+    private void saveFile(ByteArrayResource multipartFile, final String filePath) {
+        try {
+            Files.write(Paths.get(filePath), multipartFile.getByteArray());
+        } catch (Exception exception) {
+            log.error("Can not to save file: {} with exception: {}", filePath, exception);
+        }
     }
 
     private FileEntity saveDocument(final String documentId,
