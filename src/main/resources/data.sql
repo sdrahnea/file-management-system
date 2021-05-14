@@ -3,4 +3,4 @@ SELECT 1;
 -- insert into constant(name) values ('true'), ('false');
 
 -- INSERT INTO users(username, password) VALUES ('admin', '$2a$10$GIkct28TsCYqOgF4h/KefOVtViBQhhSFdCiyKAmxGYz2tX.JYVEfa');
---TODO add refrences on for entities {{package}} : com.omsentities.history
+--TODO add references on for entities {{package}} : com.omsentities.history
