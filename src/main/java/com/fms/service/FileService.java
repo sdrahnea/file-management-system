@@ -29,14 +29,14 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public String upload(MultipartFile multipartFile, String documentId, String tenant) {
+    public String upload(MultipartFile multipartFile, String fileId, String tenant) {
 
-        log.info("Receive multipart file request for document id: {}", documentId);
+        log.info("Receive multipart file request for file id: {}", fileId);
 
         final String directoryName = DateUtils.getCurrentDateAsString();
         checkAndCreateDirectoryByTenant(tenant, directoryName);
-        final String filePath = computeAbsoluteFilePath(directoryName, documentId, tenant);
-        FileEntity result = saveDocument(documentId, filePath, directoryName, tenant);
+        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
+        FileEntity result = saveDocument(fileId, filePath, directoryName, tenant);
 
         try {
             multipartFile.transferTo(new File(filePath));
@@ -47,40 +47,40 @@ public class FileService {
         return result.getDocumentId();
     }
 
-    public String upload(ByteArrayResource multipartFile, String documentId, String tenant) {
-        log.info("Receive byteArrayResource request for document id: {}", documentId);
+    public String upload(ByteArrayResource multipartFile, String fileId, String tenant) {
+        log.info("Receive byteArrayResource request for file id: {}", fileId);
 
         final String directoryName = DateUtils.getCurrentDateAsString();
         checkAndCreateDirectoryByTenant(tenant, directoryName);
-        final String filePath = computeAbsoluteFilePath(directoryName, documentId, tenant);
-        FileEntity result = saveDocument(documentId, filePath, directoryName, tenant);
+        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
+        FileEntity result = saveDocument(fileId, filePath, directoryName, tenant);
 
         saveFile(multipartFile, filePath);
 
         return result.getDocumentId();
     }
 
-    public String upload(ByteArrayResource multipartFile, String documentId, String directoryName, String tenant) {
-        log.info("Receive byteArrayResource request for document id: {}", documentId);
+    public String upload(ByteArrayResource multipartFile, String fileId, String directoryName, String tenant) {
+        log.info("Receive byteArrayResource request for file id: {}", fileId);
 
         checkAndCreateDirectoryByTenant(tenant, directoryName);
-        final String filePath = computeAbsoluteFilePath(directoryName, documentId, tenant);
-        FileEntity result = saveDocument(documentId, filePath, directoryName, tenant);
+        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
+        FileEntity result = saveDocument(fileId, filePath, directoryName, tenant);
 
         saveFile(multipartFile, filePath);
 
         return result.getDocumentId();
     }
 
-    public byte[] download(String documentId) {
-        log.info("Find data for document id: {}", documentId);
-        List<FileEntity> fileEntityList = fileRepository.findByDocumentId(documentId.trim());
+    public byte[] download(String fileId) {
+        log.info("Find data for file id: {}", fileId);
+        List<FileEntity> fileEntityList = fileRepository.findByDocumentId(fileId.trim());
 
         FileEntity fileEntity;
         if(!fileEntityList.isEmpty()) {
             fileEntity = fileEntityList.get(0);
         } else {
-            throw new RuntimeException("No record was found for document ID: {}" + documentId);
+            throw new RuntimeException("No record was found for file ID: {}" + fileId);
         }
 
         byte[] bytes = null;
@@ -101,23 +101,23 @@ public class FileService {
         }
     }
 
-    private FileEntity saveDocument(final String documentId,
+    private FileEntity saveDocument(final String fileId,
                                     final String filePath,
                                     final String directoryName,
                                     final String tenant){
         FileEntity fileEntity = new FileEntity();
-        fileEntity.setDocumentId(documentId);
+        fileEntity.setDocumentId(fileId);
         fileEntity.setDirectory(directoryName);
         fileEntity.setPath(filePath);
         fileEntity.setTenant(tenant);
 
-        log.info("Save to DB the document id: {}", documentId);
+        log.info("Save to database the file id: {}", fileId);
 
         return fileRepository.save(fileEntity);
     }
 
-    private String computeAbsoluteFilePath(final String directoryName, final String documentId, final String tenant) {
-        return appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName + "/" + documentId;
+    private String computeAbsoluteFilePath(final String directoryName, final String fileId, final String tenant) {
+        return appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName + "/" + fileId;
     }
 
     private void checkAndCreateDirectoryByTenant(final String tenant, final String directoryName) {

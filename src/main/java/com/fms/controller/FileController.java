@@ -24,43 +24,43 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @PostMapping("uploadMultipartFile/{documentId}/{tenant}")
+    @PostMapping("uploadMultipartFile/{fileId}/{tenant}")
     @ApiOperation("upload functionality")
-    public String upload(@PathVariable String documentId,
+    public String upload(@PathVariable String fileId,
                          @PathVariable String tenant,
                          @RequestPart("file") MultipartFile multipartFile) {
-        log.info("Receive request to upload document id: {}", documentId);
+        log.info("Receive request to upload document id: {}", fileId);
 
-        return fileService.upload(multipartFile, documentId, tenant);
+        return fileService.upload(multipartFile, fileId, tenant);
     }
 
-    @PostMapping("upload/{documentId}/{tenant}")
+    @PostMapping("upload/{fileId}/{tenant}")
     @ApiOperation("upload functionality in case of byte array")
-    public String upload(@PathVariable String documentId,
+    public String upload(@PathVariable String fileId,
                          @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
-        log.info("Receive request to upload document id as byte array: {}", documentId);
+        log.info("Receive request to upload document id as byte array: {}", fileId);
 
-        return fileService.upload(byteArrayResource, documentId, tenant);
+        return fileService.upload(byteArrayResource, fileId, tenant);
     }
 
-    @PostMapping("upload/{documentId}/{directory}/{tenant}")
+    @PostMapping("upload/{fileId}/{directory}/{tenant}")
     @ApiOperation("upload functionality in case of byte array and directory name")
-    public String upload(@PathVariable String documentId,
+    public String upload(@PathVariable String fileId,
                          @PathVariable String directory,
                          @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
-        log.info("Receive request to upload document id {} for directory: {}", documentId, directory);
+        log.info("Receive request to upload document id {} for directory: {}", fileId, directory);
 
-        return fileService.upload(byteArrayResource, documentId, directory, tenant);
+        return fileService.upload(byteArrayResource, fileId, directory, tenant);
     }
 
-    @GetMapping(value = "download/{documentId}")
+    @GetMapping(value = "download/{fileId}")
     @ApiOperation("download functionality")
-    public @ResponseBody byte[] download(@PathVariable String documentId) {
-        log.info("Receive request to download document id: {}", documentId);
+    public @ResponseBody byte[] download(@PathVariable String fileId) {
+        log.info("Receive request to download document id: {}", fileId);
 
-        return fileService.download(documentId);
+        return fileService.download(fileId);
     }
 
 }
