@@ -1,5 +1,6 @@
 package com.fms.controller;
 
+import com.fms.model.CreateFileResponseDto;
 import com.fms.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,15 @@ public class FileController {
     @Autowired
     public FileController(FileService fileService) {
         this.fileService = fileService;
+    }
+
+    @PostMapping("createNewFile/{tenant}")
+    @ApiOperation("create new file")
+    public CreateFileResponseDto upload(@PathVariable String tenant,
+                                        @RequestPart("file") MultipartFile multipartFile) {
+        log.info("Receive request to upload file for tenant: {}", tenant );
+
+        return fileService.upload(multipartFile, tenant);
     }
 
     @PostMapping("uploadMultipartFile/{fileId}/{tenant}")

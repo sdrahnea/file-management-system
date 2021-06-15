@@ -1,6 +1,7 @@
 package com.fms.service;
 
 import com.fms.config.AppConfig;
+import com.fms.model.CreateFileResponseDto;
 import com.fms.model.FileEntity;
 import com.fms.repository.FileRepository;
 import com.fms.util.DateUtils;
@@ -14,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,6 +30,27 @@ public class FileService {
     public FileService(AppConfig appConfig, FileRepository fileRepository) {
         this.appConfig = appConfig;
         this.fileRepository = fileRepository;
+    }
+
+    public CreateFileResponseDto upload(MultipartFile multipartFile, String tenant) {
+
+        log.info("Receive multipart file request for tenant id: {}", tenant);
+
+        final String directoryName = DateUtils.getCurrentDateAsString();
+        checkAndCreateDirectoryByTenant(tenant, directoryName);
+
+        final String fileId = UUID.randomUUID().toString();
+
+        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
+        FileEntity result = saveDocument(fileId, filePath, directoryName, tenant);
+
+        try {
+            multipartFile.transferTo(new File(filePath));
+        } catch (Exception exception) {
+            log.error("Can not to save file: " + filePath + " exception: " + exception);
+        }
+
+        return new CreateFileResponseDto(fileId, tenant, Instant.now());
     }
 
     public String upload(MultipartFile multipartFile, String fileId, String tenant) {
