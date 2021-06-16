@@ -1,10 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.2] - 2021-06-XX [Unreleased]
+## [1.0.3] - 2021-07-XX [Unreleased]
 ### Added
 - file storage strategy 
 - constraint file retrieve / store by tenant
+
+## [1.0.2] - 2021-06-XX [Unreleased]
+### Added
+- new end-point: upload file by tenant only
 
 ### Fixed
 - fix data sql file 
