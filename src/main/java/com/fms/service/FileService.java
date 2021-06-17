@@ -42,7 +42,7 @@ public class FileService {
         final String fileId = UUID.randomUUID().toString();
 
         final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
-        FileEntity result = saveDocument(fileId, filePath, directoryName, tenant);
+        saveDocument(fileId, filePath, directoryName, tenant);
 
         try {
             multipartFile.transferTo(new File(filePath));
@@ -50,7 +50,7 @@ public class FileService {
             log.error("Can not to save file: " + filePath + " exception: " + exception);
         }
 
-        return new CreateFileResponseDto(fileId, tenant, Instant.now());
+        return new CreateFileResponseDto(fileId, tenant, filePath, Instant.now());
     }
 
     public String upload(MultipartFile multipartFile, String fileId, String tenant) {
