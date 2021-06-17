@@ -11,6 +11,7 @@ public class CreateFileResponseDto {
 
     private String uuid;
     private String tenant;
+    private String path;
     private Instant createdAt;
 
 }
