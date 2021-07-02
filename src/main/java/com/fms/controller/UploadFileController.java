@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Upload / download contents
+ * In this class are implemented all end-points related to file upload.
  */
 @Slf4j
 @RestController
-@Api("Document File Controller API")
-public class FileController {
+@Api("Download File Controller API")
+public class UploadFileController {
 
     private final FileService fileService;
 
     @Autowired
-    public FileController(FileService fileService) {
+    public UploadFileController(FileService fileService){
         this.fileService = fileService;
     }
 
-    @PostMapping("createNewFile/{tenant}")
-    @ApiOperation("create new file")
+    @PostMapping("uploadNewFile/{tenant}")
+    @ApiOperation("upload new file by tenant")
     public CreateFileResponseDto upload(@PathVariable String tenant,
                                         @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload file for tenant: {}", tenant );
@@ -63,14 +63,6 @@ public class FileController {
         log.info("Receive request to upload document id {} for directory: {}", fileId, directory);
 
         return fileService.upload(byteArrayResource, fileId, directory, tenant);
-    }
-
-    @GetMapping(value = "download/{fileId}")
-    @ApiOperation("download functionality")
-    public @ResponseBody byte[] download(@PathVariable String fileId) {
-        log.info("Receive request to download document id: {}", fileId);
-
-        return fileService.download(fileId);
     }
 
 }
