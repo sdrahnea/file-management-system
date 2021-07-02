@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - file storage strategy 
 - constraint file retrieve / store by tenant
 
+### Fixed
+- split controller and services into dedicated ones
+
 ## [1.0.2] - 2021-07-02
 ### Added
 - new end-point: upload file by tenant only
