@@ -1,6 +1,6 @@
 package com.fms.controller;
 
-import com.fms.service.FileService;
+import com.fms.service.DownloadFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Api("Download File Controller API")
 public class DownloadFileController {
 
-    private final FileService fileService;
+    private final DownloadFileService downloadFileService;
 
     @Autowired
-    public DownloadFileController(FileService fileService){
-        this.fileService = fileService;
+    public DownloadFileController(DownloadFileService downloadFileService){
+        this.downloadFileService = downloadFileService;
     }
 
     @GetMapping(value = "download/{fileId}")
@@ -31,7 +31,7 @@ public class DownloadFileController {
     byte[] download(@PathVariable String fileId) {
         log.info("Receive request to download document id: {}", fileId);
 
-        return fileService.download(fileId);
+        return downloadFileService.download(fileId);
     }
 
 }

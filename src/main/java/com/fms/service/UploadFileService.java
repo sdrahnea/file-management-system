@@ -3,7 +3,9 @@ package com.fms.service;
 import com.fms.config.AppConfig;
 import com.fms.model.CreateFileResponseDto;
 import com.fms.model.FileEntity;
+import com.fms.model.StorageDto;
 import com.fms.repository.FileRepository;
+import com.fms.service.storage.FileStorageStrategyFactory;
 import com.fms.util.DateUtils;
 import com.fms.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,41 +18,36 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @Slf4j
 @Service
-public class FileService {
+public class UploadFileService {
 
     private final AppConfig appConfig;
     private final FileRepository fileRepository;
+    private final FileStorageStrategyFactory fileStorageStrategyFactory;
 
     @Autowired
-    public FileService(AppConfig appConfig, FileRepository fileRepository) {
+    public UploadFileService(AppConfig appConfig,
+                             FileRepository fileRepository,
+                             FileStorageStrategyFactory fileStorageStrategyFactory) {
         this.appConfig = appConfig;
         this.fileRepository = fileRepository;
+        this.fileStorageStrategyFactory = fileStorageStrategyFactory;
     }
 
     public CreateFileResponseDto upload(MultipartFile multipartFile, String tenant) {
 
         log.info("Receive multipart file request for tenant id: {}", tenant);
 
-        final String directoryName = DateUtils.getCurrentDateAsString();
-        checkAndCreateDirectoryByTenant(tenant, directoryName);
+        StorageDto storageDto = new StorageDto();
+        storageDto.setTenant(tenant);
+        storageDto.setMultipartFile(multipartFile);
 
-        final String fileId = UUID.randomUUID().toString();
+        Map<String, String> map = fileStorageStrategyFactory.getStorageStrategyMode().store(storageDto);
 
-        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
-        saveDocument(fileId, filePath, directoryName, tenant);
-
-        try {
-            multipartFile.transferTo(new File(filePath));
-        } catch (Exception exception) {
-            log.error("Can not to save file: " + filePath + " exception: " + exception);
-        }
-
-        return new CreateFileResponseDto(fileId, tenant, filePath, Instant.now());
+        return new CreateFileResponseDto(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
     }
 
     public String upload(MultipartFile multipartFile, String fileId, String tenant) {
@@ -96,27 +93,6 @@ public class FileService {
         return result.getDocumentId();
     }
 
-    public byte[] download(String fileId) {
-        log.info("Find data for file id: {}", fileId);
-        List<FileEntity> fileEntityList = fileRepository.findByDocumentId(fileId.trim());
-
-        FileEntity fileEntity;
-        if(!fileEntityList.isEmpty()) {
-            fileEntity = fileEntityList.get(0);
-        } else {
-            throw new RuntimeException("No record was found for file ID: {}" + fileId);
-        }
-
-        byte[] bytes = null;
-        try {
-            bytes = Files.readAllBytes(Paths.get(fileEntity.getPath()));
-        } catch(Exception exception) {
-            log.error("Can not to download fom this path: {}, throw exception: {}", fileEntity.getPath(), exception);
-        }
-
-        return bytes;
-    }
-
     private void saveFile(ByteArrayResource multipartFile, final String filePath) {
         try {
             Files.write(Paths.get(filePath), multipartFile.getByteArray());
@@ -128,7 +104,7 @@ public class FileService {
     private FileEntity saveDocument(final String fileId,
                                     final String filePath,
                                     final String directoryName,
-                                    final String tenant){
+                                    final String tenant) {
         FileEntity fileEntity = new FileEntity();
         fileEntity.setDocumentId(fileId);
         fileEntity.setDirectory(directoryName);

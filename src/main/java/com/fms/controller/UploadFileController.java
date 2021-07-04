@@ -1,7 +1,7 @@
 package com.fms.controller;
 
 import com.fms.model.CreateFileResponseDto;
-import com.fms.service.FileService;
+import com.fms.service.UploadFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * In this class are implemented all end-points related to file upload.
@@ -18,20 +20,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Api("Download File Controller API")
 public class UploadFileController {
 
-    private final FileService fileService;
+    private final UploadFileService uploadFileService;
 
     @Autowired
-    public UploadFileController(FileService fileService){
-        this.fileService = fileService;
+    public UploadFileController(UploadFileService uploadFileService){
+        this.uploadFileService = uploadFileService;
     }
 
     @PostMapping("uploadNewFile/{tenant}")
     @ApiOperation("upload new file by tenant")
     public CreateFileResponseDto upload(@PathVariable String tenant,
-                                        @RequestPart("file") MultipartFile multipartFile) {
+                                        @RequestPart("file") MultipartFile multipartFile) throws IOException {
         log.info("Receive request to upload file for tenant: {}", tenant );
 
-        return fileService.upload(multipartFile, tenant);
+        return uploadFileService.upload(multipartFile, tenant);
     }
 
     @PostMapping("uploadMultipartFile/{fileId}/{tenant}")
@@ -41,7 +43,7 @@ public class UploadFileController {
                          @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload document id: {}", fileId);
 
-        return fileService.upload(multipartFile, fileId, tenant);
+        return uploadFileService.upload(multipartFile, fileId, tenant);
     }
 
     @PostMapping("upload/{fileId}/{tenant}")
@@ -51,7 +53,7 @@ public class UploadFileController {
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id as byte array: {}", fileId);
 
-        return fileService.upload(byteArrayResource, fileId, tenant);
+        return uploadFileService.upload(byteArrayResource, fileId, tenant);
     }
 
     @PostMapping("upload/{fileId}/{directory}/{tenant}")
@@ -62,7 +64,7 @@ public class UploadFileController {
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id {} for directory: {}", fileId, directory);
 
-        return fileService.upload(byteArrayResource, fileId, directory, tenant);
+        return uploadFileService.upload(byteArrayResource, fileId, directory, tenant);
     }
 
 }
