@@ -3,7 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.3] - 2021-07-XX [Unreleased]
 ### Added
-- file storage strategy 
+- file storage strategies:
+  -- ${file.db.location} / ${tenant} / ${file_id}
+  -- ${file.db.location} / ${tenant} / ${date} / ${file_id}
 - constraint file retrieve / store by tenant
 
 ### Fixed
