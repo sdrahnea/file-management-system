@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
   -- ${file.db.location} / ${tenant} / ${file_id}
   -- ${file.db.location} / ${tenant} / ${date} / ${file_id}
   -- ${file.db.location} / ${tenant} / ${year} / ${date} / ${file_id}
+  -- ${file.db.location} / ${tenant} / ${year} / ${month} / ${date} / ${file_id}
 - constraint file retrieve / store by tenant
 
 ### Fixed
