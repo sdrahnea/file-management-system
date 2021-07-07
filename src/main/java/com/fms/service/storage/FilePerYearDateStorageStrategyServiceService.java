@@ -25,7 +25,7 @@ import java.util.UUID;
  * where:
  *  - ${file.db.location}   the main path to file storage;
  *  - ${tenant}             an generic identifier
- *  - ${year}               a folder, which represents the month
+ *  - ${year}               a folder, which represents the year
  *  - ${date}               a folder, with yyyy-MM-dd date format
  *  - ${file_id}            an identifier given by system to content
  */
