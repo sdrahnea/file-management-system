@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2021-08-XX [Unreleased]
+### Added
+- constraint file retrieve / store by tenant
+
+### Fixed
+
 ## [1.0.3] - 2021-07-XX [Unreleased]
 ### Added
 - file storage strategies:
