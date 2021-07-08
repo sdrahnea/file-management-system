@@ -8,6 +8,7 @@ public class DateUtils {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String YEAR_DATE_FORMAT = "yyyy";
     private static final String MONTH_DATE_FORMAT = "MM";
+    private static final String DAY_DATE_FORMAT = "dd";
 
     /**
      * @return current date into DATE_FORMAT value
@@ -27,6 +28,10 @@ public class DateUtils {
 
     public static String getMonth(final Date date) {
         return new SimpleDateFormat(MONTH_DATE_FORMAT).format(getCurrentDateIfNull(date));
+    }
+
+    public static String getDay(final Date date) {
+        return new SimpleDateFormat(DAY_DATE_FORMAT).format(getCurrentDateIfNull(date));
     }
 
     private static Date getCurrentDateIfNull(final Date date) {
