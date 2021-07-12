@@ -88,7 +88,7 @@ In case if application is run in a linux based instance, please create the follo
 
 To run the application we have the following options:
 ```
-nohub java -jar file-management-system-1.0.2.jar --spring.config.location=/app/config/application.properties &
+nohub java -jar file-management-system-1.0.3.jar --spring.config.location=/app/config/application.properties &
 ```
 
 To show last NUM_OF_RECORDS from a FILE_NAME linux command:
@@ -102,7 +102,7 @@ We did not test how the application works on PRODUCTION on WINDOWS environment.
 
 To run application, please run this command:
 ```
-java -jar D:\projects\app\file-management-system-1.0.2.jar --spring.config.location=D:/projects/app/config/application.properties
+java -jar D:\projects\app\file-management-system-1.0.3.jar --spring.config.location=D:/projects/app/config/application.properties
 ```
 
 ## 4. Swagger usage

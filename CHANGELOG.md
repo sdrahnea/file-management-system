@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-## [1.0.3] - 2021-07-XX [Unreleased]
+## [1.0.3] - 2021-07-12
 ### Added
 - file storage strategies:
   -- ${file.db.location} / ${tenant} / ${file_id}
