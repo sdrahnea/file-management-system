@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - constraint file retrieve / store by tenant
 
 ### Fixed
+- small refactors
 
 ## [1.0.3] - 2021-07-12
 ### Added

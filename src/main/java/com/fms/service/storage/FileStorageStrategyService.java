@@ -27,14 +27,14 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class FileStorageStrategyServiceService implements StorageStrategyService {
+public class FileStorageStrategyService implements StorageStrategyService {
 
     private final AppConfig appConfig;
     private final FileRepository fileRepository;
 
     @Autowired
-    public FileStorageStrategyServiceService(AppConfig appConfig,
-                                             FileRepository fileRepository){
+    public FileStorageStrategyService(AppConfig appConfig,
+                                      FileRepository fileRepository){
         this.appConfig = appConfig;
         this.fileRepository = fileRepository;
     }

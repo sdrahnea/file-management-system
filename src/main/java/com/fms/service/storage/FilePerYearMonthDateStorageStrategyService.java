@@ -21,24 +21,24 @@ import java.util.UUID;
 
 /**
  * This class contains implementation for file storage rule:
- *          ${file.db.location} / ${tenant} / ${year} / ${date} /${file_id}
+ *          ${file.db.location} / ${tenant} / ${year} / ${month} / ${date} /${file_id}
  * where:
  *  - ${file.db.location}   the main path to file storage;
  *  - ${tenant}             an generic identifier
  *  - ${year}               a folder, which represents the year
+ *  - ${month}              a folder, which represents the month
  *  - ${date}               a folder, with yyyy-MM-dd date format
  *  - ${file_id}            an identifier given by system to content
  */
 @Slf4j
 @Service
-public class FilePerYearDateStorageStrategyServiceService implements StorageStrategyService {
+public class FilePerYearMonthDateStorageStrategyService implements StorageStrategyService {
 
     private final AppConfig appConfig;
     private final FileRepository fileRepository;
 
     @Autowired
-    public FilePerYearDateStorageStrategyServiceService(AppConfig appConfig,
-                                                    FileRepository fileRepository){
+    public FilePerYearMonthDateStorageStrategyService(AppConfig appConfig, FileRepository fileRepository){
         this.appConfig = appConfig;
         this.fileRepository = fileRepository;
     }
@@ -84,8 +84,10 @@ public class FilePerYearDateStorageStrategyServiceService implements StorageStra
 
     private String computeAbsoluteFilePath(final String fileId, final String tenant) {
         Date date = new Date();
-        return appConfig.getFileDbLocation() + "/" + tenant
+        return appConfig.getFileDbLocation()
+                + "/" + tenant
                 + "/" + DateUtils.getYear(date)
+                + "/" + DateUtils.getMonth(date)
                 + "/" + DateUtils.formatDate(date)
                 + "/" + fileId;
     }
@@ -98,5 +100,6 @@ public class FilePerYearDateStorageStrategyServiceService implements StorageStra
             log.error("Could not check or create directory: {}", exception);
         }
     }
+
 
 }

@@ -14,30 +14,30 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 /**
  * This class contains implementation for file storage rule:
- *          ${file.db.location} / ${tenant} / ${date} / ${file_id}
+ *          ${file.db.location} / ${tenant} / ${year} / ${month} /${file_id}
  * where:
  *  - ${file.db.location}   the main path to file storage;
  *  - ${tenant}             an generic identifier
- *  - ${date}               a folder, with yyyy-MM-dd date format
+ *  - ${year}               a folder, which represents the year
+ *  - ${month}              a folder, which represents the month
  *  - ${file_id}            an identifier given by system to content
  */
-
 @Slf4j
 @Service
-public class FilePerDateStorageStrategyServiceService implements StorageStrategyService {
+public class FilePerYearMonthStorageStrategyService implements StorageStrategyService {
 
     private final AppConfig appConfig;
     private final FileRepository fileRepository;
 
     @Autowired
-    public FilePerDateStorageStrategyServiceService(AppConfig appConfig,
-                                                    FileRepository fileRepository){
+    public FilePerYearMonthStorageStrategyService(AppConfig appConfig, FileRepository fileRepository){
         this.appConfig = appConfig;
         this.fileRepository = fileRepository;
     }
@@ -47,14 +47,13 @@ public class FilePerDateStorageStrategyServiceService implements StorageStrategy
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
-
-        final String directoryName = DateUtils.getCurrentDateAsString();
-        checkAndCreateDirectoryByTenant(tenant, directoryName);
-
         final String fileId = UUID.randomUUID().toString();
 
-        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
-        saveDocument(fileId, filePath, directoryName, tenant);
+        final String filePath = computeAbsoluteFilePath(fileId, tenant);
+
+        checkAndCreateDirectories(filePath);
+
+        saveDocument(fileId, filePath, tenant);
 
         try {
             multipartFile.transferTo(new File(filePath));
@@ -71,11 +70,9 @@ public class FilePerDateStorageStrategyServiceService implements StorageStrategy
 
     private FileEntity saveDocument(final String fileId,
                                     final String filePath,
-                                    final String directoryName,
                                     final String tenant) {
         FileEntity fileEntity = new FileEntity();
         fileEntity.setDocumentId(fileId);
-        fileEntity.setDirectory(directoryName);
         fileEntity.setPath(filePath);
         fileEntity.setTenant(tenant);
 
@@ -84,17 +81,22 @@ public class FilePerDateStorageStrategyServiceService implements StorageStrategy
         return fileRepository.save(fileEntity);
     }
 
-    private String computeAbsoluteFilePath(final String directoryName, final String fileId, final String tenant) {
-        return appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName + "/" + fileId;
+    private String computeAbsoluteFilePath(final String fileId, final String tenant) {
+        Date date = new Date();
+        return appConfig.getFileDbLocation()
+                + "/" + tenant
+                + "/" + DateUtils.getYear(date)
+                + "/" + DateUtils.getMonth(date)
+                + "/" + fileId;
     }
 
-    private void checkAndCreateDirectoryByTenant(final String tenant, final String directoryName) {
+    private void checkAndCreateDirectories(final String location) {
         try {
-            final String location = appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName;
             FileUtils.checkAndCreateDirectory(location);
             Files.createDirectories(Paths.get(location));
         } catch (Exception exception) {
             log.error("Could not check or create directory: {}", exception);
         }
     }
+
 }

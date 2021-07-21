@@ -10,22 +10,22 @@ public class FileStorageStrategyFactory {
 
     private final StorageStrategy storageStrategy;
 
-    private final FilePerDateStorageStrategyServiceService filePerDateStorageStrategyService;
-    private final FilePerYearDateStorageStrategyServiceService filePerYearDateStorageStrategyService;
-    private final FilePerYearMonthDateStorageStrategyServiceService filePerYearMonthDateStorageStrategyService;
-    private final FilePerYearMonthDayStorageStrategyServiceService filePerYearMonthDayStorageStrategyService;
-    private final FilePerYearMonthStorageStrategyServiceService filePerYearMonthStorageStrategyService;
-    private final FileStorageStrategyServiceService fileStorageStrategyService;
+    private final FilePerDateStorageStrategyService filePerDateStorageStrategyService;
+    private final FilePerYearDateStorageStrategyService filePerYearDateStorageStrategyService;
+    private final FilePerYearMonthDateStorageStrategyService filePerYearMonthDateStorageStrategyService;
+    private final FilePerYearMonthDayStorageStrategyService filePerYearMonthDayStorageStrategyService;
+    private final FilePerYearMonthStorageStrategyService filePerYearMonthStorageStrategyService;
+    private final FileStorageStrategyService fileStorageStrategyService;
 
     @Autowired
     public FileStorageStrategyFactory(@Value("${storage.strategy}") StorageStrategy storageStrategy,
-                                      FilePerDateStorageStrategyServiceService filePerDateStorageStrategyService,
-                                      FilePerYearDateStorageStrategyServiceService filePerYearDateStorageStrategyService,
-                                      FilePerYearMonthDateStorageStrategyServiceService filePerYearMonthDateStorageStrategyService,
-                                      FilePerYearMonthDayStorageStrategyServiceService filePerYearMonthDayStorageStrategyService,
-                                      FilePerYearMonthStorageStrategyServiceService filePerYearMonthStorageStrategyService,
-                                      FileStorageStrategyServiceService fileStorageStrategyService
-                                      ){
+                                      FilePerDateStorageStrategyService filePerDateStorageStrategyService,
+                                      FilePerYearDateStorageStrategyService filePerYearDateStorageStrategyService,
+                                      FilePerYearMonthDateStorageStrategyService filePerYearMonthDateStorageStrategyService,
+                                      FilePerYearMonthDayStorageStrategyService filePerYearMonthDayStorageStrategyService,
+                                      FilePerYearMonthStorageStrategyService filePerYearMonthStorageStrategyService,
+                                      FileStorageStrategyService fileStorageStrategyService
+    ) {
         this.storageStrategy = storageStrategy;
         this.filePerDateStorageStrategyService = filePerDateStorageStrategyService;
         this.filePerYearDateStorageStrategyService = filePerYearDateStorageStrategyService;
@@ -35,17 +35,24 @@ public class FileStorageStrategyFactory {
         this.fileStorageStrategyService = fileStorageStrategyService;
     }
 
-    public StorageStrategyService getStorageStrategyMode(){
+    public StorageStrategyService getStorageStrategyMode() {
 
         switch (storageStrategy) {
-            case FILE: return fileStorageStrategyService;
-            case FILE_PER_DATE: return filePerDateStorageStrategyService;
-            case FILE_PER_YEAR_DATE: return filePerYearDateStorageStrategyService;
-            case FILE_PER_YEAR_MONTH: return filePerYearMonthStorageStrategyService;
-            case FILE_PER_YEAR_MONTH_DAY: return filePerYearMonthDayStorageStrategyService;
-            case FILE_PER_YEAR_MONTH_DATE: return filePerYearMonthDateStorageStrategyService;
+            case FILE:
+                return fileStorageStrategyService;
+            case FILE_PER_DATE:
+                return filePerDateStorageStrategyService;
+            case FILE_PER_YEAR_DATE:
+                return filePerYearDateStorageStrategyService;
+            case FILE_PER_YEAR_MONTH:
+                return filePerYearMonthStorageStrategyService;
+            case FILE_PER_YEAR_MONTH_DAY:
+                return filePerYearMonthDayStorageStrategyService;
+            case FILE_PER_YEAR_MONTH_DATE:
+                return filePerYearMonthDateStorageStrategyService;
 
-            default: throw new RuntimeException("No strategy was found!");
+            default:
+                throw new RuntimeException("No strategy was found!");
         }
 
     }
