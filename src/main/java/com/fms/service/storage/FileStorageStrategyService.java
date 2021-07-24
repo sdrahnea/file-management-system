@@ -84,8 +84,7 @@ public class FileStorageStrategyService implements StorageStrategyService {
     private void checkAndCreateDirectoryByTenant(final String tenant) {
         try {
             final String location = appConfig.getFileDbLocation() + "/" + tenant;
-            FileUtils.checkAndCreateDirectory(location);
-            Files.createDirectories(Paths.get(location));
+            FileUtils.checkAndCreateDirectories(location);
         } catch (Exception exception) {
             log.error("Could not check or create directory: {}", exception);
         }

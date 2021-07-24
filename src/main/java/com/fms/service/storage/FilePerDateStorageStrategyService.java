@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -91,8 +89,7 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
     private void checkAndCreateDirectoryByTenant(final String tenant, final String directoryName) {
         try {
             final String location = appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName;
-            FileUtils.checkAndCreateDirectory(location);
-            Files.createDirectories(Paths.get(location));
+            FileUtils.checkAndCreateDirectories(location);
         } catch (Exception exception) {
             log.error("Could not check or create directory: {}", exception);
         }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,11 +50,9 @@ public class FilePerYearMonthDateStorageStrategyService implements StorageStrate
 
         final String filePath = computeAbsoluteFilePath(fileId, tenant);
 
-        checkAndCreateDirectories(filePath);
-
-        saveDocument(fileId, filePath, tenant);
-
         try {
+            FileUtils.checkAndCreateDirectories(filePath);
+            saveDocument(fileId, filePath, tenant);
             multipartFile.transferTo(new File(filePath));
         } catch (Exception exception) {
             log.error("Can not to save file: " + filePath + " exception: " + exception);
@@ -91,15 +87,5 @@ public class FilePerYearMonthDateStorageStrategyService implements StorageStrate
                 + "/" + DateUtils.formatDate(date)
                 + "/" + fileId;
     }
-
-    private void checkAndCreateDirectories(final String location) {
-        try {
-            FileUtils.checkAndCreateDirectory(location);
-            Files.createDirectories(Paths.get(location));
-        } catch (Exception exception) {
-            log.error("Could not check or create directory: {}", exception);
-        }
-    }
-
 
 }
