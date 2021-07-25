@@ -6,13 +6,13 @@ import com.fms.model.StorageDto;
 import com.fms.repository.FileRepository;
 import com.fms.util.DateUtils;
 import com.fms.util.FileUtils;
+import com.fms.util.MapHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,7 +45,6 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
-
         final String directoryName = DateUtils.getCurrentDateAsString();
         checkAndCreateDirectoryByTenant(tenant, directoryName);
 
@@ -60,11 +59,7 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
             log.error("Can not to save file: " + filePath + " exception: " + exception);
         }
 
-        Map<String, String> map = new HashMap<>();
-        map.put("FILE_ID", fileId);
-        map.put("FILE_PATH", filePath);
-
-        return map;
+        return MapHelper.create(fileId, filePath);
     }
 
     private FileEntity saveDocument(final String fileId,
