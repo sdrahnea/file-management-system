@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * FileUtils class contains common methods which are used to reduce code duplication
+ */
 public class FileUtils {
 
     /***
@@ -18,6 +21,11 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Create full path tree of directories
+     * @param location absolute directory path
+     * @throws IOException
+     */
     public static void checkAndCreateDirectories(final String location) throws IOException {
         FileUtils.checkAndCreateDirectory(location);
         Files.createDirectories(Paths.get(location));
