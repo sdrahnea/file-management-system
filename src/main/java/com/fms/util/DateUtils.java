@@ -3,6 +3,9 @@ package com.fms.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * DateUtils class contains common methods which are used to reduce code duplication
+ */
 public class DateUtils {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
