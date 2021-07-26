@@ -21,7 +21,7 @@ public class MapHelper {
                                              final String filePath){
         Map<String, String> map = new HashMap<>();
         map.put(FILE_ID_KEY, fileId);
-        map.put(FILE_ID_KEY, filePath);
+        map.put(FILE_PATH_KEY, filePath);
 
         return map;
     }
