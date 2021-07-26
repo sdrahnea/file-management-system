@@ -8,6 +8,9 @@ import java.util.Map;
  */
 public class MapHelper {
 
+    public static final String FILE_ID_KEY = "FILE_ID";
+    public static final String FILE_PATH_KEY = "FILE_PATH";
+
     /**
      * Create a map with two keys: FILE_ID and FILE_PATH
      * @param fileId    generated file ID value
@@ -17,8 +20,8 @@ public class MapHelper {
     public static Map<String, String> create(final String fileId,
                                              final String filePath){
         Map<String, String> map = new HashMap<>();
-        map.put("FILE_ID", fileId);
-        map.put("FILE_PATH", filePath);
+        map.put(FILE_ID_KEY, fileId);
+        map.put(FILE_ID_KEY, filePath);
 
         return map;
     }
