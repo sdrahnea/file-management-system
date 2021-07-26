@@ -21,22 +21,47 @@ public class DateUtils {
         return simpleDateFormat.format(new Date());
     }
 
+    /**
+     *
+     * @param date when null then assign current date
+     * @return current date based on DATE_FORMAT value
+     */
     public static String formatDate(final Date date){
         return new SimpleDateFormat(DATE_FORMAT).format(getCurrentDateIfNull(date));
     }
 
+    /**
+     *
+     * @param date when null then assign current date
+     * @return extract year value from date parameter
+     */
     public static String getYear(final Date date) {
         return new SimpleDateFormat(YEAR_DATE_FORMAT).format(getCurrentDateIfNull(date));
     }
 
+    /**
+     *
+     * @param date when null then assign current date
+     * @return extract month value from date parameter
+     */
     public static String getMonth(final Date date) {
         return new SimpleDateFormat(MONTH_DATE_FORMAT).format(getCurrentDateIfNull(date));
     }
 
+    /**
+     *
+     * @param date when null then assign current date
+     * @return extract day value from date parameter
+     */
     public static String getDay(final Date date) {
         return new SimpleDateFormat(DAY_DATE_FORMAT).format(getCurrentDateIfNull(date));
     }
 
+    /**
+     *
+     * @param date when null then assign current date
+     * @return input date or current date
+     */
     private static Date getCurrentDateIfNull(final Date date) {
         return date == null ? new Date() : date;
     }
