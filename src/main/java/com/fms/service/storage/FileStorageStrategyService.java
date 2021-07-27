@@ -39,17 +39,15 @@ public class FileStorageStrategyService implements StorageStrategyService {
 
     @Override
     public Map<String, String> store(StorageDto storageDto) {
+
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
-
-        checkAndCreateDirectoryByTenant(tenant);
-
         final String fileId = UUID.randomUUID().toString();
-
         final String filePath = computeAbsoluteFilePath(fileId, tenant);
-        saveDocument(fileId, filePath, tenant);
 
         try {
+            FileUtils.checkAndCreateDirectories(computeLocation(tenant));
+            saveDocument(fileId, filePath, tenant);
             multipartFile.transferTo(new File(filePath));
         } catch (Exception exception) {
             log.error("Can not to save file: " + filePath + " exception: " + exception);
@@ -75,13 +73,8 @@ public class FileStorageStrategyService implements StorageStrategyService {
         return appConfig.getFileDbLocation() + "/" + tenant + "/" + fileId;
     }
 
-    private void checkAndCreateDirectoryByTenant(final String tenant) {
-        try {
-            final String location = appConfig.getFileDbLocation() + "/" + tenant;
-            FileUtils.checkAndCreateDirectories(location);
-        } catch (Exception exception) {
-            log.error("Could not check or create directory: {}", exception);
-        }
+    private String computeLocation(final String tenant){
+        return appConfig.getFileDbLocation() + "/" + tenant;
     }
 
 }

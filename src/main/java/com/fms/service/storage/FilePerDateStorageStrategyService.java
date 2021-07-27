@@ -46,14 +46,12 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
         final String directoryName = DateUtils.getCurrentDateAsString();
-        checkAndCreateDirectoryByTenant(tenant, directoryName);
-
         final String fileId = UUID.randomUUID().toString();
-
         final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
-        saveDocument(fileId, filePath, directoryName, tenant);
 
         try {
+            FileUtils.checkAndCreateDirectories(computeLocation(tenant, directoryName));
+            saveDocument(fileId, filePath, directoryName, tenant);
             multipartFile.transferTo(new File(filePath));
         } catch (Exception exception) {
             log.error("Can not to save file: " + filePath + " exception: " + exception);
@@ -81,12 +79,7 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
         return appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName + "/" + fileId;
     }
 
-    private void checkAndCreateDirectoryByTenant(final String tenant, final String directoryName) {
-        try {
-            final String location = appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName;
-            FileUtils.checkAndCreateDirectories(location);
-        } catch (Exception exception) {
-            log.error("Could not check or create directory: {}", exception);
-        }
+    private String computeLocation(final String tenant, final String directoryName) {
+        return appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName;
     }
 }
