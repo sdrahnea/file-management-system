@@ -43,10 +43,14 @@ public class FileStorageStrategyService implements StorageStrategyService {
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
         final String fileId = UUID.randomUUID().toString();
-        final String filePath = computeAbsoluteFilePath(fileId, tenant);
+        final String filePath = FileUtils.computeAbsolutePath(
+                appConfig.getFileDbLocation(), fileId, tenant
+        );
 
         try {
-            FileUtils.checkAndCreateDirectories(computeLocation(tenant));
+            FileUtils.checkAndCreateDirectories(
+                    FileUtils.computeAbsolutePath(appConfig.getFileDbLocation(), tenant)
+            );
             saveDocument(fileId, filePath, tenant);
             multipartFile.transferTo(new File(filePath));
         } catch (Exception exception) {
@@ -67,14 +71,6 @@ public class FileStorageStrategyService implements StorageStrategyService {
         log.info("Save to database the file id: {}", fileId);
 
         return fileRepository.save(fileEntity);
-    }
-
-    private String computeAbsoluteFilePath(final String fileId, final String tenant) {
-        return appConfig.getFileDbLocation() + "/" + tenant + "/" + fileId;
-    }
-
-    private String computeLocation(final String tenant){
-        return appConfig.getFileDbLocation() + "/" + tenant;
     }
 
 }

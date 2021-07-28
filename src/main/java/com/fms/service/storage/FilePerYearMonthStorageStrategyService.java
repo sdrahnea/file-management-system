@@ -75,11 +75,13 @@ public class FilePerYearMonthStorageStrategyService implements StorageStrategySe
 
     private String computeAbsoluteFilePath(final String fileId, final String tenant) {
         Date date = new Date();
-        return appConfig.getFileDbLocation()
-                + "/" + tenant
-                + "/" + DateUtils.getYear(date)
-                + "/" + DateUtils.getMonth(date)
-                + "/" + fileId;
+        return FileUtils.computeAbsolutePath(
+                appConfig.getFileDbLocation()
+                , tenant
+                , DateUtils.getYear(date)
+                , DateUtils.getMonth(date)
+                , fileId
+        );
     }
 
 }

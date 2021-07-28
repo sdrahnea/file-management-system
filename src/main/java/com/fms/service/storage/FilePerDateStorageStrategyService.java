@@ -47,7 +47,9 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
 
         final String directoryName = DateUtils.getCurrentDateAsString();
         final String fileId = UUID.randomUUID().toString();
-        final String filePath = computeAbsoluteFilePath(directoryName, fileId, tenant);
+        final String filePath = FileUtils.computeAbsolutePath(
+                appConfig.getFileDbLocation(), directoryName, fileId, tenant
+        );
 
         try {
             FileUtils.checkAndCreateDirectories(computeLocation(tenant, directoryName));
@@ -73,10 +75,6 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
         log.info("Save to database the file id: {}", fileId);
 
         return fileRepository.save(fileEntity);
-    }
-
-    private String computeAbsoluteFilePath(final String directoryName, final String fileId, final String tenant) {
-        return appConfig.getFileDbLocation() + "/" + tenant + "/" + directoryName + "/" + fileId;
     }
 
     private String computeLocation(final String tenant, final String directoryName) {
