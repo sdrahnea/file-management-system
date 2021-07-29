@@ -66,11 +66,9 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
                                     final String filePath,
                                     final String directoryName,
                                     final String tenant) {
-        FileEntity fileEntity = new FileEntity();
-        fileEntity.setDocumentId(fileId);
-        fileEntity.setDirectory(directoryName);
-        fileEntity.setPath(filePath);
-        fileEntity.setTenant(tenant);
+        FileEntity fileEntity = new FileEntity(
+                 fileId, directoryName, filePath, tenant
+        );
 
         log.info("Save to database the file id: {}", fileId);
 

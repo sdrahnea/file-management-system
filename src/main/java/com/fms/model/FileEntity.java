@@ -39,6 +39,25 @@ public class FileEntity {
         }
     }
 
+    public FileEntity(String documentId, String directory, String path, String tenant) {
+        this.documentId = documentId;
+        this.directory = directory;
+        this.path = path;
+        this.tenant = tenant;
+        if (getCreatedDate() == null){
+            setCreatedDate(new Date());
+        }
+    }
+
+    public FileEntity(String documentId, String path, String tenant) {
+        this.documentId = documentId;
+        this.path = path;
+        this.tenant = tenant;
+        if (getCreatedDate() == null){
+            setCreatedDate(new Date());
+        }
+    }
+
     public String getDocumentId() {
         return documentId;
     }

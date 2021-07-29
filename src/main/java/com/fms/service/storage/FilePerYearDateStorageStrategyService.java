@@ -64,10 +64,9 @@ public class FilePerYearDateStorageStrategyService implements StorageStrategySer
     private FileEntity saveDocument(final String fileId,
                                     final String filePath,
                                     final String tenant) {
-        FileEntity fileEntity = new FileEntity();
-        fileEntity.setDocumentId(fileId);
-        fileEntity.setPath(filePath);
-        fileEntity.setTenant(tenant);
+        FileEntity fileEntity = new FileEntity(
+                fileId, filePath, tenant
+        );
 
         log.info("Save to database the file id: {}", fileId);
 
