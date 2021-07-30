@@ -65,7 +65,7 @@ public class UploadFileService {
             log.error("Can not to save file: " + filePath + " exception: " + exception);
         }
 
-        return result.getDocumentId();
+        return result.getFileId();
     }
 
     public String upload(ByteArrayResource multipartFile, String fileId, String tenant) {
@@ -78,7 +78,7 @@ public class UploadFileService {
 
         saveFile(multipartFile, filePath);
 
-        return result.getDocumentId();
+        return result.getFileId();
     }
 
     public String upload(ByteArrayResource multipartFile, String fileId, String directoryName, String tenant) {
@@ -90,7 +90,7 @@ public class UploadFileService {
 
         saveFile(multipartFile, filePath);
 
-        return result.getDocumentId();
+        return result.getFileId();
     }
 
     private void saveFile(ByteArrayResource multipartFile, final String filePath) {
@@ -105,11 +105,9 @@ public class UploadFileService {
                                     final String filePath,
                                     final String directoryName,
                                     final String tenant) {
-        FileEntity fileEntity = new FileEntity();
-        fileEntity.setDocumentId(fileId);
-        fileEntity.setDirectory(directoryName);
-        fileEntity.setPath(filePath);
-        fileEntity.setTenant(tenant);
+        FileEntity fileEntity = new FileEntity(
+                fileId, directoryName, filePath, tenant
+        );
 
         log.info("Save to database the file id: {}", fileId);
 

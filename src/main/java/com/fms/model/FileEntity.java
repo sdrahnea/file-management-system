@@ -17,8 +17,8 @@ public class FileEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "document_id")
-    private String documentId;
+    @Column(name = "file_id")
+    private String fileId;
 
     @Column(name = "directory")
     private String directory;
@@ -39,8 +39,8 @@ public class FileEntity {
         }
     }
 
-    public FileEntity(String documentId, String directory, String path, String tenant) {
-        this.documentId = documentId;
+    public FileEntity(String fileId, String directory, String path, String tenant) {
+        this.fileId = fileId;
         this.directory = directory;
         this.path = path;
         this.tenant = tenant;
@@ -49,8 +49,8 @@ public class FileEntity {
         }
     }
 
-    public FileEntity(String documentId, String path, String tenant) {
-        this.documentId = documentId;
+    public FileEntity(String fileId, String path, String tenant) {
+        this.fileId = fileId;
         this.path = path;
         this.tenant = tenant;
         if (getCreatedDate() == null){
@@ -58,12 +58,12 @@ public class FileEntity {
         }
     }
 
-    public String getDocumentId() {
-        return documentId;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setDocumentId(String contentId) {
-        this.documentId = contentId;
+    public void setFileId(String contentId) {
+        this.fileId = contentId;
     }
 
     public String getPath() {
