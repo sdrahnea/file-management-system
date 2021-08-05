@@ -2,6 +2,9 @@ package com.fms.service;
 
 import com.fms.config.AppConfig;
 
+/**
+ * This class contains implementation related to tenant methods
+ */
 public class TenantService {
 
     private final AppConfig appConfig;

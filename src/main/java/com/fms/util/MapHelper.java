@@ -17,8 +17,7 @@ public class MapHelper {
      * @param filePath  generated file path value
      * @return a map which contains FILE_ID and FILE_PATH elements
      */
-    public static Map<String, String> create(final String fileId,
-                                             final String filePath){
+    public static Map<String, String> create(final String fileId, final String filePath){
         Map<String, String> map = new HashMap<>();
         map.put(FILE_ID_KEY, fileId);
         map.put(FILE_PATH_KEY, filePath);

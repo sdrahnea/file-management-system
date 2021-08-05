@@ -20,6 +20,9 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Map;
 
+/**
+ * This class contains implementation related to file upload methods
+ */
 @Slf4j
 @Service
 public class UploadFileService {

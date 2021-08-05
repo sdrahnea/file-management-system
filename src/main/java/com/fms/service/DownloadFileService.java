@@ -11,6 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * This class contains implementation related to file download methods
+ */
 @Slf4j
 @Service
 public class DownloadFileService {
