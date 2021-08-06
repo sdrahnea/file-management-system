@@ -29,7 +29,7 @@ public class DownloadFileService {
 
     public byte[] download(String fileId) {
         log.info("Find data for file id: {}", fileId);
-        List<FileEntity> fileEntityList = fileRepository.findByDocumentId(fileId.trim());
+        List<FileEntity> fileEntityList = fileRepository.findByFileId(fileId.trim());
 
         FileEntity fileEntity;
         if(!fileEntityList.isEmpty()) {
