@@ -1,6 +1,7 @@
 package com.fms.controller;
 
 import com.fms.model.CreateFileResponseDto;
+import com.fms.service.TenantService;
 import com.fms.service.UploadFileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,10 +22,13 @@ import java.io.IOException;
 public class UploadFileController {
 
     private final UploadFileService uploadFileService;
+    private final TenantService tenantService;
 
     @Autowired
-    public UploadFileController(UploadFileService uploadFileService){
+    public UploadFileController(UploadFileService uploadFileService,
+                                TenantService tenantService){
         this.uploadFileService = uploadFileService;
+        this.tenantService = tenantService;
     }
 
     @PostMapping("uploadNewFile/{tenant}")
@@ -32,6 +36,8 @@ public class UploadFileController {
     public CreateFileResponseDto upload(@PathVariable String tenant,
                                         @RequestPart("file") MultipartFile multipartFile) throws IOException {
         log.info("Receive request to upload file for tenant: {}", tenant );
+
+        tenantService.checkIfTenantIsAllowed(tenant);
 
         return uploadFileService.upload(multipartFile, tenant);
     }
@@ -43,6 +49,8 @@ public class UploadFileController {
                          @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload document id: {}", fileId);
 
+        tenantService.checkIfTenantIsAllowed(tenant);
+
         return uploadFileService.upload(multipartFile, fileId, tenant);
     }
 
@@ -52,6 +60,8 @@ public class UploadFileController {
                          @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id as byte array: {}", fileId);
+
+        tenantService.checkIfTenantIsAllowed(tenant);
 
         return uploadFileService.upload(byteArrayResource, fileId, tenant);
     }
@@ -63,6 +73,8 @@ public class UploadFileController {
                          @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
         log.info("Receive request to upload document id {} for directory: {}", fileId, directory);
+
+        tenantService.checkIfTenantIsAllowed(tenant);
 
         return uploadFileService.upload(byteArrayResource, fileId, directory, tenant);
     }
