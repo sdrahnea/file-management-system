@@ -44,7 +44,7 @@ public class FileStorageStrategyService implements StorageStrategyService {
         final MultipartFile multipartFile = storageDto.getMultipartFile();
         final String fileId = UUID.randomUUID().toString();
         final String filePath = FileUtils.computeAbsolutePath(
-                appConfig.getFileDbLocation(), fileId, tenant
+                appConfig.getFileDbLocation(), tenant, fileId
         );
 
         try {
