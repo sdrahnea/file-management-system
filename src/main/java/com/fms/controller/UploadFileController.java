@@ -11,8 +11,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 /**
  * In this class are implemented all end-points related to file upload.
  */
@@ -34,7 +32,7 @@ public class UploadFileController {
     @PostMapping("uploadNewFile/{tenant}")
     @ApiOperation("upload new file by tenant")
     public CreateFileResponseDto upload(@PathVariable String tenant,
-                                        @RequestPart("file") MultipartFile multipartFile) throws IOException {
+                                        @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload file for tenant: {}", tenant );
 
         tenantService.checkIfTenantIsAllowed(tenant);
