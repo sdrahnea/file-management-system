@@ -102,7 +102,7 @@ We did not test how the application works on PRODUCTION on WINDOWS environment.
 
 To run application, please run this command:
 ```
-java -jar D:\projects\app\file-management-system-1.0.3.jar --spring.config.location=D:/projects/app/config/application.properties
+java -jar D:\projects\app\file-management-system-1.0.3.jar --spring.config.location=D:\projects\app\config\application.properties
 ```
 
 ## 4. Swagger usage
