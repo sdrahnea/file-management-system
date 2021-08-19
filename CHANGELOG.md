@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 - add file metadata (size, creation date, file extension, etc)
 - add file version
 - add unit tests 
-- add performance tests
+- add performance tests (related to h2 database)
 
 ### Fixed
 -
