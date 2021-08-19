@@ -1,6 +1,7 @@
 package com.fms.controller;
 
 import com.fms.service.DownloadFileService;
+import com.fms.service.TenantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class DownloadFileController {
 
     private final DownloadFileService downloadFileService;
+    private final TenantService tenantService;
 
     @Autowired
-    public DownloadFileController(DownloadFileService downloadFileService){
+    public DownloadFileController(DownloadFileService downloadFileService, TenantService tenantService){
         this.downloadFileService = downloadFileService;
+        this.tenantService = tenantService;
     }
 
     @GetMapping(value = "download/{fileId}")
@@ -30,6 +33,17 @@ public class DownloadFileController {
     public @ResponseBody
     byte[] download(@PathVariable String fileId) {
         log.info("Receive request to download document id: {}", fileId);
+
+        return downloadFileService.download(fileId);
+    }
+
+    @GetMapping(value = "download/{fileId}/{tenant}")
+    @ApiOperation("download functionality by tenant")
+    public @ResponseBody
+    byte[] downloadByTenant(@PathVariable String fileId, @PathVariable String tenant) {
+        log.info("Receive request to download document by (id, tenant): {},  {}", fileId, tenant);
+
+        tenantService.checkIfTenantIsAllowed(tenant);
 
         return downloadFileService.download(fileId);
     }
