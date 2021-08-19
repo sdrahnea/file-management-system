@@ -1,9 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.4] - 2021-08-XX [Unreleased]
+## [1.0.5] - 2021-09-XX [Unreleased]
+### Added
+- add file metadata (size, creation date, file extension, etc)
+- add file version
+- add unit tests 
+- add performance tests
+
+### Fixed
+-
+
+## [1.0.4] - 2021-08-29
 ### Added
 - constraint file retrieve / store by tenant
+- add new end-point: download functionality by tenant
 
 ### Fixed
 - creation file path in FileStorageStrategyService
