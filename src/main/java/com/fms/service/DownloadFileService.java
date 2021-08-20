@@ -35,7 +35,7 @@ public class DownloadFileService {
         if(!fileEntityList.isEmpty()) {
             fileEntity = fileEntityList.get(0);
         } else {
-            throw new RuntimeException("No record was found for file ID: {}" + fileId);
+            throw new RuntimeException("No record was found for file ID: " + fileId);
         }
 
         byte[] bytes = null;
