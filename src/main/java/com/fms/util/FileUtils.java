@@ -42,7 +42,7 @@ public class FileUtils {
      */
     public static String computeAbsolutePath(String... args) {
         String absolutePath = null;
-        final int ARGS_LENGTH = args.length;
+        final int ARGS_LENGTH = args != null ? args.length : 0;
 
         if (ARGS_LENGTH > 0) {
             absolutePath = args[0];

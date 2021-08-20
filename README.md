@@ -12,8 +12,8 @@ The file content is located into logical disk. The system is exposed via API.
         - 1.2.3 PostgreSQL
 2. Running the tests
 3. Deployment
-   - Deployment & run on LINUX environment
-   - Deployment & run on WINDOWS environment
+   3.1 Deployment & run on LINUX environment
+   3.2 Deployment & run on WINDOWS environment
 4. Swagger usage
 5. Built With
 6. Contributing
@@ -70,7 +70,8 @@ mvn clean package
 
 ## 2. Running the tests
 
-This project does not have any kind of tests :).
+All available unit / integration tests are in package: `src/test/java`.
+The main rule is: one unit test class for each java class.
 
 ## 3. Deployment
 
