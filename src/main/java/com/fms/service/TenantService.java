@@ -18,9 +18,13 @@ public class TenantService {
     }
 
     public void checkIfTenantIsAllowed(final String tenant){
-        if(appConfig.isTenantVerification() && !appConfig.getTenantList().contains(tenant)) {
+        if(isEnabledTenantVerificationAndTenantExists(tenant)) {
             throw new RuntimeException("Tenant is not allowed!");
         }
+    }
+
+    private boolean isEnabledTenantVerificationAndTenantExists(String tenant) {
+        return appConfig.isTenantVerification() && !appConfig.getTenantList().contains(tenant);
     }
 
 }

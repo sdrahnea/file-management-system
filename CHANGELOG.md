@@ -7,9 +7,11 @@ All notable changes to this project will be documented in this file.
 - add file version
 - add unit tests 
 - add performance tests (related to h2 database)
+- add possibility to communicate over queue 
 
 ### Fixed
--
+- fix error log text
+- small refactoring
 
 ## [1.0.4] - 2021-08-29
 ### Added
