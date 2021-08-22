@@ -1,6 +1,5 @@
 package com.fms.service;
 
-import com.fms.config.AppConfig;
 import com.fms.model.FileEntity;
 import com.fms.repository.FileRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +17,10 @@ import java.util.List;
 @Service
 public class DownloadFileService {
 
-    private final AppConfig appConfig;
     private final FileRepository fileRepository;
 
     @Autowired
-    public DownloadFileService(AppConfig appConfig, FileRepository fileRepository) {
-        this.appConfig = appConfig;
+    public DownloadFileService(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
 
