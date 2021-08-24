@@ -54,7 +54,6 @@ public class FileStorageStrategyFactory {
             default:
                 throw new RuntimeException("No strategy was found!");
         }
-
     }
 
 }
