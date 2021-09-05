@@ -1,4 +1,4 @@
-package util;
+package com.fms.util;
 
 import com.fms.util.FileUtils;
 import org.junit.jupiter.api.Assertions;
