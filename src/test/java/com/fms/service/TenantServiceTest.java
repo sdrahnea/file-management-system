@@ -1,4 +1,4 @@
-package service;
+package com.fms.service;
 
 import com.fms.config.AppConfig;
 import com.fms.service.TenantService;

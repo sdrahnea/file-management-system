@@ -1,4 +1,4 @@
-package service;
+package com.fms.service;
 
 import com.fms.model.FileEntity;
 import com.fms.repository.FileRepository;

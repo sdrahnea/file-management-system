@@ -1,9 +1,8 @@
-package service.storage;
+package com.fms.service.storage;
 
 import com.fms.config.AppConfig;
 import com.fms.model.StorageStrategy;
 import com.fms.repository.FileRepository;
-import com.fms.service.storage.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

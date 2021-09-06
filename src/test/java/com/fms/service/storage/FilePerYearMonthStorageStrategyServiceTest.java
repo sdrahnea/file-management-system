@@ -1,23 +1,22 @@
-package service.storage;
+package com.fms.service.storage;
 
 import com.fms.config.AppConfig;
 import com.fms.model.StorageDto;
 import com.fms.repository.FileRepository;
-import com.fms.service.storage.FilePerYearMonthDayStorageStrategyService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 
 import java.util.Collections;
 
-public class FilePerYearMonthDayStorageStrategyServiceTest {
+public class FilePerYearMonthStorageStrategyServiceTest {
 
     AppConfig appConfig = new AppConfig(Collections.emptyList(), "DUMMY_PATH", false);
 
     @Mock
     FileRepository fileRepository;
 
-    FilePerYearMonthDayStorageStrategyService filePerYearMonthDayStorageStrategyService = new FilePerYearMonthDayStorageStrategyService(appConfig, fileRepository);
+    FilePerYearMonthStorageStrategyService filePerYearMonthStorageStrategyService = new FilePerYearMonthStorageStrategyService(appConfig, fileRepository);
 
     @Test
     public void should_run_storage(){
@@ -26,6 +25,6 @@ public class FilePerYearMonthDayStorageStrategyServiceTest {
         storageDto.setTenant(ArgumentMatchers.anyString());
         storageDto.setContent(ArgumentMatchers.anyString().getBytes());
 
-        filePerYearMonthDayStorageStrategyService.store(storageDto);
+        filePerYearMonthStorageStrategyService.store(storageDto);
     }
 }

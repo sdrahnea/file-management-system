@@ -1,9 +1,8 @@
-package service.storage;
+package com.fms.service.storage;
 
 import com.fms.config.AppConfig;
 import com.fms.model.StorageDto;
 import com.fms.repository.FileRepository;
-import com.fms.service.storage.FilePerYearMonthDateStorageStrategyService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
