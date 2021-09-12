@@ -30,8 +30,8 @@ public class DownloadFileController {
 
     @GetMapping(value = "download/{fileId}")
     @ApiOperation("download functionality")
-    public @ResponseBody
-    byte[] download(@PathVariable String fileId) {
+    @ResponseBody
+    public byte[] download(@PathVariable String fileId) {
         log.info("Receive request to download document id: {}", fileId);
 
         return downloadFileService.download(fileId);
@@ -39,8 +39,8 @@ public class DownloadFileController {
 
     @GetMapping(value = "download/{fileId}/{tenant}")
     @ApiOperation("download functionality by tenant")
-    public @ResponseBody
-    byte[] downloadByTenant(@PathVariable String fileId, @PathVariable String tenant) {
+    @ResponseBody
+    public byte[] downloadByTenant(@PathVariable String fileId, @PathVariable String tenant) {
         log.info("Receive request to download document by (id, tenant): {},  {}", fileId, tenant);
 
         tenantService.checkIfTenantIsAllowed(tenant);
