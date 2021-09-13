@@ -1,14 +1,14 @@
 package com.fms.exception;
 
-public class TenantListMissingException extends RuntimeException {
+public class MissingTenantListException extends RuntimeException {
 
     private static final String MESSAGE = "Tenant list is missing! Provide a configuration!";
 
-    public TenantListMissingException(String message) {
+    public MissingTenantListException(String message) {
         super(message);
     }
 
-    public TenantListMissingException() {
+    public MissingTenantListException() {
         super(MESSAGE);
     }
 
