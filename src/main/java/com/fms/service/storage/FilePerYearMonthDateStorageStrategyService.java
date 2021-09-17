@@ -52,7 +52,7 @@ public class FilePerYearMonthDateStorageStrategyService implements StorageStrate
 
         try {
             FileUtils.checkAndCreateDirectories(filePath);
-            saveDocument(fileId, filePath, tenant);
+            saveFile(fileId, filePath, tenant);
             multipartFile.transferTo(new File(filePath));
         } catch (Exception exception) {
             log.error("Can not to save file: " + filePath + " exception: " + exception);
@@ -61,9 +61,9 @@ public class FilePerYearMonthDateStorageStrategyService implements StorageStrate
         return MapHelper.create(fileId, filePath);
     }
 
-    private FileEntity saveDocument(final String fileId,
-                                    final String filePath,
-                                    final String tenant) {
+    private FileEntity saveFile(final String fileId,
+                                final String filePath,
+                                final String tenant) {
         FileEntity fileEntity = new FileEntity(
                 fileId, filePath, tenant
         );
