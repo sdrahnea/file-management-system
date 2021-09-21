@@ -1,7 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.5] - 2021-09-XX [Unreleased]
+## [1.0.6] - 2021-09-XX [Unreleased]
+### Added
+- add file id strategy for generating file names:
+  -- UUID: will generate an uuid value;
+  -- INSTANT: will generate equivalent epoch value for now (numbers)
+
+### Fixed
+
+## [1.0.5] - 2021-09-21
 ### Added
 - add file metadata (size, creation date, file extension, etc)
 - add file version
