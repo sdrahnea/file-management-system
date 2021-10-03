@@ -51,7 +51,7 @@ ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PAS
 ```
 
 #### 1.2.3 Postgres
-Install PostgreSQL. it is required to create a database:
+Install PostgreSQL. It is required to create a database:
 
 Please, run the following commands if it is the case:
 ```
