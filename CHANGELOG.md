@@ -1,13 +1,20 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.6] - 2021-09-XX [Unreleased]
+## [1.0.7] - 2021-MM-DD [Unreleased]
+### Added
+- add clients for interaction with the APIs
+
+### Fixed
+
+## [1.0.6] - 2021-10-04
 ### Added
 - add file id strategy for generating file names:
   -- UUID: will generate an uuid value;
   -- INSTANT: will generate equivalent epoch value for now (numbers)
 
 ### Fixed
+- small refactors
 
 ## [1.0.5] - 2021-09-21
 ### Added

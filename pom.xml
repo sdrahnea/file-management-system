@@ -5,7 +5,7 @@
 
     <groupId>com.fms</groupId>
     <artifactId>file-management-system</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
 
     <name>file-management-system</name>
