@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageDto {
 
     private String tenant;
+    private String fileId;
     private byte[] content;
     private MultipartFile multipartFile;
 
