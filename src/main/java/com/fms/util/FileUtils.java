@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 /**
  * FileUtils class contains common methods which are used to reduce code duplication
@@ -55,6 +56,15 @@ public class FileUtils {
         }
 
         return absolutePath;
+    }
+
+    /**
+     *
+     * @param id
+     * @return a random UUID value as string or the id if the value is not null
+     */
+    public static String createIdIfNull(final String id){
+        return id!= null ? id : UUID.randomUUID().toString();
     }
 
 }
