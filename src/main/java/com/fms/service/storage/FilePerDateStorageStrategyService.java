@@ -46,7 +46,7 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
         final String directoryName = DateUtils.getCurrentDateAsString();
-        final String fileId = UUID.randomUUID().toString();
+        final String fileId = FileUtils.createIdIfNull(storageDto.getFileId());
         final String filePath = FileUtils.computeAbsolutePath(
                 appConfig.getFileDbLocation(), directoryName, fileId, tenant
         );
