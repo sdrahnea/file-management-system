@@ -46,7 +46,7 @@ public class FilePerYearDateStorageStrategyService implements StorageStrategySer
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
-        final String fileId = UUID.randomUUID().toString();
+        final String fileId = FileUtils.createIdIfNull(storageDto.getFileId());
 
         final String filePath = computeAbsoluteFilePath(fileId, tenant);
 
