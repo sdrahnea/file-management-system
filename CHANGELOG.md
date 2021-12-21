@@ -1,11 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.7] - 2021-MM-DD [Unreleased]
+## [1.0.8] - 2022-MM-DD [Unreleased]
 ### Added
 - add clients for interaction with the APIs
 
 ### Fixed
+
+## [1.0.7] - 2021-MM-DD [Unreleased]
+### Added
+- implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${month} /${file_id}
+- implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${date} /${file_id}
+
+### Fixed
+- add fileId field into StorageDto model
 
 ## [1.0.6] - 2021-10-04
 ### Added
