@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${month} /${file_id}
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${date} /${file_id}
+- implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${month} / ${day} / ${file_id}
 
 ### Fixed
 - add fileId field into StorageDto model
