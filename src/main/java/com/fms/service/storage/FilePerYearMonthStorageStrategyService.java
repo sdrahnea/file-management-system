@@ -19,7 +19,7 @@ import java.util.UUID;
 
 /**
  * This class contains implementation for file storage rule:
- *          ${file.db.location} / ${tenant} / ${year} / ${month} /${file_id}
+ *          ${file.db.location} / ${tenant} / ${year} / ${month} / ${file_id}
  * where:
  *  - ${file.db.location}   the main path to file storage;
  *  - ${tenant}             an generic identifier
@@ -45,7 +45,7 @@ public class FilePerYearMonthStorageStrategyService implements StorageStrategySe
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
-        final String fileId = UUID.randomUUID().toString();
+        final String fileId = FileUtils.createIdIfNull(storageDto.getFileId());
 
         final String filePath = computeAbsoluteFilePath(fileId, tenant);
 
