@@ -53,6 +53,26 @@ public class UploadFileService {
         return new CreateFileResponseDto(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
     }
 
+    public CreateFileResponseDto uploadFileByTenantAndId(MultipartFile multipartFile, String tenant, String fileId) {
+
+        log.info("Receive multipart file request for tenant id: {}, file id: {}", tenant, fileId);
+
+        StorageDto storageDto = new StorageDto();
+        storageDto.setTenant(tenant);
+        storageDto.setFileId(fileId);
+        storageDto.setMultipartFile(multipartFile);
+
+        Map<String, String> map = fileStorageStrategyFactory.getStorageStrategyMode().store(storageDto);
+
+        return new CreateFileResponseDto(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
+    }
+
+    public String uploadNewFile(MultipartFile multipartFile, String tenant, String fileId) {
+        log.info("Receive multipart file request for tenant id: {}, file id: {}", tenant, fileId);
+
+        return uploadFileByTenantAndId(multipartFile, tenant, fileId).getUuid();
+    }
+
     public String upload(MultipartFile multipartFile, String fileId, String tenant) {
 
         log.info("Receive multipart file request for file id: {}", fileId);
