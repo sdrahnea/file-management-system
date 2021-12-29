@@ -24,7 +24,7 @@ public class UploadFileController {
 
     @Autowired
     public UploadFileController(UploadFileService uploadFileService,
-                                TenantService tenantService){
+                                TenantService tenantService) {
         this.uploadFileService = uploadFileService;
         this.tenantService = tenantService;
     }
@@ -33,11 +33,31 @@ public class UploadFileController {
     @ApiOperation("upload new file by tenant")
     public CreateFileResponseDto upload(@PathVariable String tenant,
                                         @RequestPart("file") MultipartFile multipartFile) {
-        log.info("Receive request to upload file for tenant: {}", tenant );
+        log.info("Receive request to upload file for tenant: {}", tenant);
 
         tenantService.checkIfTenantIsAllowed(tenant);
 
         return uploadFileService.upload(multipartFile, tenant);
+    }
+
+    @PostMapping("uploadByTenantAndFileId/{tenant}/{fileId}")
+    @ApiOperation("upload new file by tenant and file id values")
+    public CreateFileResponseDto uploadFileByTenantAndFileId(@PathVariable String tenant,
+                                                             @PathVariable String fileId,
+                                                             @RequestPart("file") MultipartFile multipartFile) {
+        log.info("Receive request to upload file for tenant: {}, file id: {}", tenant, fileId);
+        tenantService.checkIfTenantIsAllowed(tenant);
+        return uploadFileService.uploadFileByTenantAndId(multipartFile, tenant, fileId);
+    }
+
+    @PostMapping("uploadNewFile/{fileId}/{tenant}")
+    @ApiOperation("upload new file by file id and tenant values")
+    public String uploadNewFile(@PathVariable String fileId,
+                                @PathVariable String tenant,
+                                @RequestPart("file") MultipartFile multipartFile) {
+        log.info("Receive request to upload file for tenant: {}, file id: {}", tenant, fileId);
+        tenantService.checkIfTenantIsAllowed(tenant);
+        return uploadFileService.uploadNewFile(multipartFile, tenant, fileId);
     }
 
     @PostMapping("uploadMultipartFile/{fileId}/{tenant}")
