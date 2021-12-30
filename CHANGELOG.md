@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${month} / ${day} / ${file_id}
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${month} / ${file_id}
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${file_id}
+- implement uploadByTenantAndFileId/{tenant}/{fileId} end-point
+- implement uploadNewFile/{fileId}/{tenant} end-point
 
 ### Fixed
 - add fileId field into StorageDto model
