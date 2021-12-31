@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-## [1.0.7] - 2021-MM-DD [Unreleased]
+## [1.0.7] - 2021-12-31
 ### Added
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${month} /${file_id}
 - implement the file id from the request for ${file.db.location} / ${tenant} / ${year} / ${date} /${file_id}

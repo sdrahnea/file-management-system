@@ -26,7 +26,7 @@ public class SpringFoxConfig {
         return new ApiInfo(
                 "File Management System API",
                 "Manage file contents (upload/download/storage).",
-                "1.0.6",
+                "1.0.7",
                 "Terms of service",
                 null,
                 "License of API", "API license URL", Collections.emptyList());
