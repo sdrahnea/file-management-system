@@ -38,7 +38,7 @@ public class FileIdServiceFactory {
     /**
      * Create the file id value based for file id strategy
      *
-     * @return
+     * @return file id based on selected strategy
      */
     public String create() {
         return getIdService().createId();
