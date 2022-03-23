@@ -5,6 +5,13 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * This class contains all configuration from application config file which is used in multiple class.
+ * Small field's description:
+ *  tenantList          all tenant (is this is the case)
+ *  fileDbLocation      the path where the file will be saved
+ *  tenantVerification  is required to do tenant verification or not
+ */
 @Configuration
 public class AppConfig {
 
