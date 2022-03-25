@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+/**
+ * This class contains all configuration related to file transfer.
+ * For more details, see the Configuration file transfer section from property file.
+ */
 @Configuration
 public class MultipartConfig {
 
