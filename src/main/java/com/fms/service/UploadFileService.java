@@ -1,9 +1,9 @@
 package com.fms.service;
 
 import com.fms.config.AppConfig;
-import com.fms.model.CreateFileResponseDto;
+import com.fms.model.CreateFileResponseDTO;
 import com.fms.model.FileEntity;
-import com.fms.model.StorageDto;
+import com.fms.model.StorageDTO;
 import com.fms.repository.FileRepository;
 import com.fms.service.storage.FileStorageStrategyFactory;
 import com.fms.util.DateUtils;
@@ -40,31 +40,31 @@ public class UploadFileService {
         this.fileStorageStrategyFactory = fileStorageStrategyFactory;
     }
 
-    public CreateFileResponseDto upload(MultipartFile multipartFile, String tenant) {
+    public CreateFileResponseDTO upload(MultipartFile multipartFile, String tenant) {
 
         log.info("Receive multipart file request for tenant id: {}", tenant);
 
-        StorageDto storageDto = new StorageDto();
+        StorageDTO storageDto = new StorageDTO();
         storageDto.setTenant(tenant);
         storageDto.setMultipartFile(multipartFile);
 
         Map<String, String> map = fileStorageStrategyFactory.getStorageStrategyMode().store(storageDto);
 
-        return new CreateFileResponseDto(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
+        return new CreateFileResponseDTO(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
     }
 
-    public CreateFileResponseDto uploadFileByTenantAndId(MultipartFile multipartFile, String tenant, String fileId) {
+    public CreateFileResponseDTO uploadFileByTenantAndId(MultipartFile multipartFile, String tenant, String fileId) {
 
         log.info("Receive multipart file request for tenant id: {}, file id: {}", tenant, fileId);
 
-        StorageDto storageDto = new StorageDto();
+        StorageDTO storageDto = new StorageDTO();
         storageDto.setTenant(tenant);
         storageDto.setFileId(fileId);
         storageDto.setMultipartFile(multipartFile);
 
         Map<String, String> map = fileStorageStrategyFactory.getStorageStrategyMode().store(storageDto);
 
-        return new CreateFileResponseDto(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
+        return new CreateFileResponseDTO(map.get("FILE_ID"), tenant, map.get("FILE_PATH"), Instant.now());
     }
 
     public String uploadNewFile(MultipartFile multipartFile, String tenant, String fileId) {
