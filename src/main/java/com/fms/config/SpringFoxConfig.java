@@ -10,6 +10,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Collections;
 
+/**
+ * This class contains the configuration for swagger.
+ * Contains information related the production.
+ *
+ * WARN: at this moment the hard-coded values should be modified once a new release was done.
+ */
 @Configuration
 public class SpringFoxConfig {
 
@@ -22,6 +28,7 @@ public class SpringFoxConfig {
                 .build();
     }
 
+    //TODO: get this values from the property file.
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "File Management System API",
