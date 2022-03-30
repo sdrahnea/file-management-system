@@ -1,6 +1,6 @@
 package com.fms.controller;
 
-import com.fms.model.CreateFileResponseDto;
+import com.fms.model.CreateFileResponseDTO;
 import com.fms.service.TenantService;
 import com.fms.service.UploadFileService;
 import io.swagger.annotations.Api;
@@ -31,7 +31,7 @@ public class UploadFileController {
 
     @PostMapping("uploadNewFile/{tenant}")
     @ApiOperation("upload new file by tenant")
-    public CreateFileResponseDto upload(@PathVariable String tenant,
+    public CreateFileResponseDTO upload(@PathVariable String tenant,
                                         @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload file for tenant: {}", tenant);
 
@@ -42,7 +42,7 @@ public class UploadFileController {
 
     @PostMapping("uploadByTenantAndFileId/{tenant}/{fileId}")
     @ApiOperation("upload new file by tenant and file id values")
-    public CreateFileResponseDto uploadFileByTenantAndFileId(@PathVariable String tenant,
+    public CreateFileResponseDTO uploadFileByTenantAndFileId(@PathVariable String tenant,
                                                              @PathVariable String fileId,
                                                              @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload file for tenant: {}, file id: {}", tenant, fileId);
