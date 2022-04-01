@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Data
 @AllArgsConstructor
-public class CreateFileResponseDto {
+public class CreateFileResponseDTO {
 
     private String uuid;
     private String tenant;
