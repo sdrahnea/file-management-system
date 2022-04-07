@@ -2,7 +2,7 @@ package com.fms.service.storage;
 
 import com.fms.config.AppConfig;
 import com.fms.model.FileEntity;
-import com.fms.model.StorageDto;
+import com.fms.model.StorageDTO;
 import com.fms.repository.FileRepository;
 import com.fms.util.DateUtils;
 import com.fms.util.FileUtils;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * This class contains implementation for file storage rule:
@@ -41,7 +40,7 @@ public class FilePerDateStorageStrategyService implements StorageStrategyService
     }
 
     @Override
-    public Map<String, String> store(StorageDto storageDto) {
+    public Map<String, String> store(StorageDTO storageDto) {
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
 
