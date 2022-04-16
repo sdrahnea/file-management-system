@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FileRequestDto {
+public class FileRequestDTO {
 
     private String fileId;
     private String tenant;
