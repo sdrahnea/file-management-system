@@ -2,7 +2,7 @@ package com.fms.service.storage;
 
 import com.fms.config.AppConfig;
 import com.fms.model.FileEntity;
-import com.fms.model.StorageDto;
+import com.fms.model.StorageDTO;
 import com.fms.repository.FileRepository;
 import com.fms.util.FileUtils;
 import com.fms.util.MapHelper;
@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * In this class is implemented file storage rule: ${file.db.location} / ${tenant} / ${file_id}
@@ -38,7 +37,7 @@ public class FileStorageStrategyService implements StorageStrategyService {
     }
 
     @Override
-    public Map<String, String> store(StorageDto storageDto) {
+    public Map<String, String> store(StorageDTO storageDto) {
 
         final String tenant = storageDto.getTenant();
         final MultipartFile multipartFile = storageDto.getMultipartFile();
