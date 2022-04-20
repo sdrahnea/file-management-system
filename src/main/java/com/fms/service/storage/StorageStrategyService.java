@@ -1,6 +1,6 @@
 package com.fms.service.storage;
 
-import com.fms.model.StorageDto;
+import com.fms.model.StorageDTO;
 
 import java.util.Map;
 
@@ -9,6 +9,6 @@ import java.util.Map;
  */
 public interface StorageStrategyService {
 
-    Map<String, String> store(StorageDto storageDto);
+    Map<String, String> store(StorageDTO storageDto);
 
 }
