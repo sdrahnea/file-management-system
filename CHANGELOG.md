@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - add clients for interaction with the APIs
 
 ### Fixed
+- code refactoring
 
 ## [1.0.7] - 2021-12-31
 ### Added
