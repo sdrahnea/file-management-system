@@ -49,6 +49,7 @@ No installation is required.
 The `spring.datasource.url` is the one required property which should be set. By default, the 
 username is `sa` with empty password. Two modes: in memory and file storage. See the `application.properties`
 file for more details related configuration.
+To access default H2 Console use this link: http://localhost:8081/h2-console/ , where 8081 is the server port.
 
 #### 2.2.2 MySQL 
 
