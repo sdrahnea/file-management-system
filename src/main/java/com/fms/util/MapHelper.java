@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * MapHelper class contains methods to reduce code duplication
  */
-public class MapHelper {
+public final class MapHelper {
 
     public static final String FILE_ID_KEY = "FILE_ID";
     public static final String FILE_PATH_KEY = "FILE_PATH";
