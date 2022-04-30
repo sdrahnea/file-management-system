@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * FileUtils class contains common methods which are used to reduce code duplication
  */
-public class FileUtils {
+public final class FileUtils {
 
     private final static String SLASH_SEPARATOR = "/";
 
