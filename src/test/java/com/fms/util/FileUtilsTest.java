@@ -1,29 +1,26 @@
 package com.fms.util;
 
-import com.fms.util.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class FileUtilsTest {
 
-    FileUtils fileUtils;
-
     @Test
     public void should_correct_paths(){
         Assertions.assertEquals(
-                null, fileUtils.computeAbsolutePath()
+                null, FileUtils.computeAbsolutePath()
         );
 
         Assertions.assertEquals(
-                "aaa", fileUtils.computeAbsolutePath("aaa")
+                "aaa", FileUtils.computeAbsolutePath("aaa")
         );
 
         Assertions.assertEquals(
-                "aaa/bbb", fileUtils.computeAbsolutePath("aaa", "bbb")
+                "aaa/bbb", FileUtils.computeAbsolutePath("aaa", "bbb")
         );
 
         Assertions.assertEquals(
-                "aaa/bbb/ccc", fileUtils.computeAbsolutePath("aaa", "bbb", "ccc")
+                "aaa/bbb/ccc", FileUtils.computeAbsolutePath("aaa", "bbb", "ccc")
         );
     }
 
