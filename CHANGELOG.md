@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.8] - 2022-MM-DD [Unreleased]
 ### Added
 - add clients for interaction with the APIs
+- add clean-up scheduler by day / month / year
 
 ### Fixed
 - code refactoring
