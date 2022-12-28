@@ -64,7 +64,7 @@ public final class FileUtils {
      * @return a random UUID value as string or the id if the value is not null
      */
     public static String createIdIfNull(final String id){
-        return id!= null ? id : UUID.randomUUID().toString();
+        return id != null ? id : UUID.randomUUID().toString();
     }
 
 }
