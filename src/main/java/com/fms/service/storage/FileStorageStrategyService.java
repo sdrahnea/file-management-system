@@ -18,7 +18,7 @@ import java.util.Map;
  * In this class is implemented file storage rule: ${file.db.location} / ${tenant} / ${file_id}
  * where:
  *  - ${file.db.location}   the main path to file storage;
- *  - ${tenant}             an generic identifier
+ *  - ${tenant}             a generic identifier
  *  - ${file_id}            an identifier given by system to content
  */
 

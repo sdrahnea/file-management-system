@@ -21,7 +21,7 @@ import java.util.Map;
  *          ${file.db.location} / ${tenant} / ${year} / ${month} / ${date} / ${file_id}
  * where:
  *  - ${file.db.location}   the main path to file storage;
- *  - ${tenant}             an generic identifier
+ *  - ${tenant}             a generic identifier
  *  - ${year}               a folder, which represents the year
  *  - ${month}              a folder, which represents the month
  *  - ${date}               a folder, with yyyy-MM-dd date format
