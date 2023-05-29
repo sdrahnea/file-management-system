@@ -14,7 +14,7 @@ import java.util.List;
  * Scheduler starts every five minutes and scan the file directory. Found all file which meets
  *  the condition and remove them.
  */
-//TODO: to improve this class
+
 @Slf4j
 @Service
 public class FileCleanUpScheduler {
@@ -30,6 +30,11 @@ public class FileCleanUpScheduler {
         this.fileCleanUpAgeType = fileCleanUpAgeType;
         this.fileRepository = fileRepository;
     }
+
+    //TODO: make final the fields
+    //TODO: to make a property for clean rate
+    //TODO: finish the strategy
+    //TODO: log files which was removed
 
     @Scheduled(cron = "*/5 * * * * ?")
     public void cleanFilesByAge() {
