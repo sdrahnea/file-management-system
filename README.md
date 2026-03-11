@@ -1,5 +1,12 @@
 # File Management System
 
+![Version](https://img.shields.io/badge/version-1.0.7-blue?style=flat-square)
+![Build](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
+![Java](https://img.shields.io/badge/Java-8-orange?style=flat-square&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.4.4-6DB33F?style=flat-square&logo=springboot)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+![Swagger](https://img.shields.io/badge/API%20docs-Swagger%20UI-85EA2D?style=flat-square&logo=swagger)
+
 A lightweight, API-first service for storing file metadata in a database while keeping the actual file content on disk.
 
 Built with Spring Boot, this project is designed for teams that need a simple file storage backend with tenant-aware organization, configurable storage layouts, and straightforward upload/download endpoints.
@@ -35,6 +42,45 @@ Tenants can be configured and optionally validated through application propertie
 
 ### API-driven integration
 The platform is exposed through HTTP endpoints and documented with Swagger UI for easy exploration and testing.
+
+## How It Works
+
+The service follows a clean separation between metadata and binary content:
+
+```
+  HTTP Client
+      │
+      ▼
+ ┌─────────────────────────────────┐
+ │        REST API (port 8081)     │
+ │  UploadFileController           │
+ │  DownloadFileController         │
+ └────────────┬────────────────────┘
+              │
+     ┌────────┴────────┐
+     │                 │
+     ▼                 ▼
+┌─────────┐     ┌────────────────────────────────────┐
+│Database │     │         Filesystem                  │
+│(H2 /    │     │  {file.db.location}                 │
+│ Postgres│     │   └── {tenant}                      │
+│ / MySQL)│     │        └── [{year}/{month}/{day}/]  │
+│         │     │             └── {fileId}            │
+│ metadata│     │                  (binary content)   │
+└─────────┘     └────────────────────────────────────┘
+```
+
+**Upload flow:**
+1. Client sends a file via `POST` to the upload endpoint.
+2. The service validates the tenant (if verification is enabled).
+3. File metadata (ID, tenant, path) is persisted to the database.
+4. Binary content is written to the filesystem under the configured storage path.
+5. The service returns the file ID and metadata to the caller.
+
+**Download flow:**
+1. Client sends a `GET` request with a file ID (and optionally a tenant).
+2. The service looks up the file path from the database.
+3. Binary content is read from the filesystem and returned as a byte array.
 
 ## Quick Start
 
@@ -97,6 +143,90 @@ The application exposes these upload routes:
 | --- | --- | --- |
 | `GET` | `/download/{fileId}` | Download a file by ID |
 | `GET` | `/download/{fileId}/{tenant}` | Download a file by ID with tenant verification |
+
+## API Examples
+
+### Upload a file (multipart)
+
+Upload a file for a specific tenant. The service generates a file ID automatically.
+
+```bash
+curl -X POST http://localhost:8081/uploadNewFile/tenant1 \
+  -F "file=@/path/to/document.pdf"
+```
+
+**Response `200 OK`:**
+
+```json
+{
+  "fileId": "3f7a1b2c-9d4e-4f6a-bf12-0e8d5c6a7f3e",
+  "tenant": "tenant1",
+  "fileName": "document.pdf"
+}
+```
+
+---
+
+### Upload a file with a specific file ID (multipart)
+
+Supply your own file ID when the calling system already has one.
+
+```bash
+curl -X POST http://localhost:8081/uploadByTenantAndFileId/tenant1/my-custom-id-001 \
+  -F "file=@/path/to/report.xlsx"
+```
+
+**Response `200 OK`:**
+
+```json
+{
+  "fileId": "my-custom-id-001",
+  "tenant": "tenant1",
+  "fileName": "report.xlsx"
+}
+```
+
+---
+
+### Upload raw byte-array content
+
+Use this when the file content is already in binary form (for example, a generated PDF).
+
+```bash
+curl -X POST http://localhost:8081/upload/my-file-id-123/tenant1 \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @/path/to/generated.pdf
+```
+
+**Response `200 OK`:**
+
+```
+my-file-id-123
+```
+
+---
+
+### Download a file by ID
+
+```bash
+curl -X GET http://localhost:8081/download/3f7a1b2c-9d4e-4f6a-bf12-0e8d5c6a7f3e \
+  --output downloaded-document.pdf
+```
+
+**Response `200 OK`:** binary file content streamed to the output file.
+
+---
+
+### Download a file by ID with tenant validation
+
+```bash
+curl -X GET http://localhost:8081/download/3f7a1b2c-9d4e-4f6a-bf12-0e8d5c6a7f3e/tenant1 \
+  --output downloaded-document.pdf
+```
+
+**Response `200 OK`:** binary file content streamed to the output file.
+
+> Full interactive documentation for all endpoints is available at `http://localhost:8081/swagger-ui.html` once the application is running.
 
 ## Storage Strategy
 
