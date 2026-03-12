@@ -33,6 +33,15 @@ public class FileEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @Column(name = "file_size_bytes")
+    private Long fileSizeBytes;
+
+    @Column(name = "content_type")
+    private String contentType;
+
+    @Column(name = "checksum")
+    private String checksum;
+
     public FileEntity(){
         if (getCreatedDate() == null){
             setCreatedDate(new Date());
@@ -57,6 +66,15 @@ public class FileEntity {
             setCreatedDate(new Date());
         }
     }
+
+    public Long getFileSizeBytes() { return fileSizeBytes; }
+    public void setFileSizeBytes(Long fileSizeBytes) { this.fileSizeBytes = fileSizeBytes; }
+
+    public String getContentType() { return contentType; }
+    public void setContentType(String contentType) { this.contentType = contentType; }
+
+    public String getChecksum() { return checksum; }
+    public void setChecksum(String checksum) { this.checksum = checksum; }
 
     public String getFileId() {
         return fileId;
@@ -96,5 +114,13 @@ public class FileEntity {
 
     public void setTenant(String tenant) {
         this.tenant = tenant;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

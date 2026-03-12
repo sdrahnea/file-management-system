@@ -45,7 +45,7 @@ public class DownloadFileController {
 
         tenantService.checkIfTenantIsAllowed(tenant);
 
-        return downloadFileService.download(fileId);
+        return downloadFileService.downloadByTenant(fileId, tenant);
     }
 
 }

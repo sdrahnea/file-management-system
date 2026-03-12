@@ -19,6 +19,11 @@ public enum FileCleanUpAgeType {
     /***
      * The unit of measure in years
      */
+    YEAR("YEAR"),
+
+    /***
+     * The unit of measure in years (legacy, misspelled)
+     */
     YAER("YAER")
     ;
 

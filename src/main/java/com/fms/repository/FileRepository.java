@@ -3,26 +3,24 @@ package com.fms.repository;
 import com.fms.model.FileEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.Date;
 import java.util.List;
 
 public interface FileRepository extends CrudRepository<FileEntity, Long> {
 
-    @Query(name = "select * from file_entity where file_id = ?1 limit 1", nativeQuery = true)
-    List<FileEntity> findByFileId(final String fileId);
+    @Query(value = "SELECT * FROM file_entity WHERE file_id = ?1 LIMIT 1", nativeQuery = true)
+    List<FileEntity> findByFileId(String fileId);
 
-    @Query(name = "select * from file_entity where file_id = ?1 AND tenant = ?1 limit 1", nativeQuery = true)
-    List<FileEntity> findByFileIdAndTenant(final String fileId, final String tenant);
+    @Query(value = "SELECT * FROM file_entity WHERE file_id = ?1 AND tenant = ?2 LIMIT 1", nativeQuery = true)
+    List<FileEntity> findByFileIdAndTenant(String fileId, String tenant);
 
-    @Query(value = "select * from file_entity", nativeQuery = true)
-    List<FileEntity> getFileForDeleting(final Integer age);
+    @Query(value = "SELECT * FROM file_entity WHERE created_date <= ?1", nativeQuery = true)
+    List<FileEntity> getFileForDeleting(Date cutoffDate);
 
-    @Query(value = "select * from file_entity where tenant = ?1 AND EXTRACT(EPOCH FROM (arrival - departure)) > ?1 limit 1", nativeQuery = true)
-    List<FileEntity> findFileForDeletingDay(final String tenant, final Integer age);
+    @Query(value = "SELECT * FROM file_entity WHERE tenant = ?1 AND created_date <= ?2", nativeQuery = true)
+    List<FileEntity> findFilesOlderThan(String tenant, Date cutoffDate);
 
-    @Query(value = "select * from file_entity where tenant = ?1 AND EXTRACT(EPOCH FROM (arrival - departure)) > ?1 limit 1", nativeQuery = true)
-    List<FileEntity> findFileForDeletingMonth(final String tenant, final Integer age);
-
-    @Query(value = "select * from file_entity where tenant = ?1 AND EXTRACT(EPOCH FROM (arrival - departure)) > ?1 limit 1", nativeQuery = true)
-    List<FileEntity> findFileForDeletingYear(final String tenant, final Integer age);
-
+    @Query(value = "SELECT COALESCE(SUM(file_size_bytes), 0) FROM file_entity WHERE tenant = ?1", nativeQuery = true)
+    Long sumStorageByTenant(String tenant);
 }

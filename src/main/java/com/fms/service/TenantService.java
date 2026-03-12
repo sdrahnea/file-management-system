@@ -1,6 +1,7 @@
 package com.fms.service;
 
 import com.fms.config.AppConfig;
+import com.fms.exception.TenantIsNotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,9 @@ public class TenantService {
         this.appConfig = appConfig;
     }
 
-    public void checkIfTenantIsAllowed(final String tenant){
-        if(isEnabledTenantVerificationAndTenantExists(tenant)) {
-            throw new RuntimeException("Tenant is not allowed!");
+    public void checkIfTenantIsAllowed(final String tenant) {
+        if (appConfig.isTenantVerification() && !appConfig.getTenantList().contains(tenant)) {
+            throw new TenantIsNotAllowedException("Tenant '" + tenant + "' is not in the allowed list.");
         }
     }
-
-    private boolean isEnabledTenantVerificationAndTenantExists(String tenant) {
-        return appConfig.isTenantVerification() && !appConfig.getTenantList().contains(tenant);
-    }
-
 }
