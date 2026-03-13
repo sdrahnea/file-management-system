@@ -1,7 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.8] - 2022-MM-DD [Unreleased]
+## [Unreleased]
+### Added
+- TBD
+
+## [1.0.9] - 2026-03-13
+### Added
+- modernized `README.md` structure and content flow for a more professional external presentation
+- expanded product-facing overview to better explain value for external users and adopters
+
+### Changed
+- improved documentation tone and section organization for clearer onboarding
+
+## [1.0.8] - 2022-MM-DD
 ### Added
 - add clients for interaction with the APIs
 - add clean-up scheduler by day / month / year
