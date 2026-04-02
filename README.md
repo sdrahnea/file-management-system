@@ -1,451 +1,220 @@
 # File Management System
 
-![Version](https://img.shields.io/badge/version-1.0.7-blue?style=flat-square)
-![Build](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
-![Java](https://img.shields.io/badge/Java-8-orange?style=flat-square&logo=java)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.4.4-6DB33F?style=flat-square&logo=springboot)
+![Version](https://img.shields.io/badge/artifact-1.0.7-blue?style=flat-square)
+![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.5-6DB33F?style=flat-square&logo=springboot)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
-![Swagger](https://img.shields.io/badge/API%20docs-Swagger%20UI-85EA2D?style=flat-square&logo=swagger)
+![API Docs](https://img.shields.io/badge/OpenAPI-springdoc-85EA2D?style=flat-square)
 
-A lightweight, API-first service for storing file metadata in a database while keeping the actual file content on disk.
+A production-ready REST API for file storage where metadata lives in a relational database and binary content is stored on disk.
 
-Built with Spring Boot, this project is designed for teams that need a simple file storage backend with tenant-aware organization, configurable storage layouts, and straightforward upload/download endpoints.
+This project is built for teams that need a simple, extensible file platform with tenant isolation, configurable storage layouts, usage tracking, and built-in controls for API-key access, quotas, and rate limits.
 
----
+## Product Overview
 
-## Why this project exists
+File Management System helps external integrators and platform teams:
 
-Many systems need to keep **structured file metadata** in a database while storing **binary content** on the filesystem for simplicity, portability, and cost control. This project provides that hybrid model behind a REST API.
+- ingest and retrieve files through a clean HTTP API
+- isolate tenants at both filesystem and database query level
+- choose storage path strategies without changing API contracts
+- enforce tenant-level quotas and upload limits
+- expose usage events for billing and analytics
+- run locally with H2 or move to PostgreSQL for larger environments
 
-At a glance, the File Management System helps you:
+## Architecture at a Glance
 
-- upload files through HTTP endpoints
-- download files by identifier
-- organize stored files by tenant and date-based directory strategies
-- keep metadata in a relational database
-- run locally with minimal setup using H2
-- switch to PostgreSQL when needed
-
-## Key Capabilities
-
-### File upload
-The service supports multiple upload flows, including multipart uploads and byte-array-based uploads.
-
-### File download
-Files can be retrieved by file ID, with optional tenant-aware validation.
-
-### Flexible storage modes
-Stored content can be organized using several folder layout strategies, including tenant-only and date-based structures.
-
-### Tenant-aware organization
-Tenants can be configured and optionally validated through application properties.
-
-### API-driven integration
-The platform is exposed through HTTP endpoints and documented with Swagger UI for easy exploration and testing.
-
-## How It Works
-
-The service follows a clean separation between metadata and binary content:
-
-```
-  HTTP Client
-      │
-      ▼
- ┌─────────────────────────────────┐
- │        REST API (port 8081)     │
- │  UploadFileController           │
- │  DownloadFileController         │
- └────────────┬────────────────────┘
-              │
-     ┌────────┴────────┐
-     │                 │
-     ▼                 ▼
-┌─────────┐     ┌────────────────────────────────────┐
-│Database │     │         Filesystem                  │
-│(H2 /    │     │  {file.db.location}                 │
-│ Postgres│     │   └── {tenant}                      │
-│ / MySQL)│     │        └── [{year}/{month}/{day}/]  │
-│         │     │             └── {fileId}            │
-│ metadata│     │                  (binary content)   │
-└─────────┘     └────────────────────────────────────┘
+```text
+Client Apps
+   |
+   v
+Spring Boot API (port 8081)
+  - UploadFileController
+  - DownloadFileController
+  - ApiKeyController
+   |
+   +--> Database (H2/PostgreSQL): metadata, API keys, usage events
+   |
+   +--> Filesystem: binary content under {file.db.location}/{tenant}/...
 ```
 
-**Upload flow:**
-1. Client sends a file via `POST` to the upload endpoint.
-2. The service validates the tenant (if verification is enabled).
-3. File metadata (ID, tenant, path) is persisted to the database.
-4. Binary content is written to the filesystem under the configured storage path.
-5. The service returns the file ID and metadata to the caller.
+Core design choices:
 
-**Download flow:**
-1. Client sends a `GET` request with a file ID (and optionally a tenant).
-2. The service looks up the file path from the database.
-3. Binary content is read from the filesystem and returned as a byte array.
+- strategy pattern for storage layout (`StorageStrategyService` + `FileStorageStrategyFactory`)
+- strategy pattern for file ID generation (`FileIdStrategyService` + `FileIdServiceFactory`)
+- centralized configuration through `AppConfig` (avoid scattered `@Value`)
+- global exception mapping via `GlobalExceptionHandler` for predictable API errors
+
+## Key Features
+
+### 1) Upload and download APIs
+
+- multipart upload and raw byte-array upload variants
+- download by file ID, with optional tenant check
+- file metadata persisted in DB, content on disk
+
+### 2) Multi-tenant isolation
+
+- tenant-aware folder structure under `file.db.location`
+- tenant-scoped repository queries for storage and retrieval
+- optional tenant allow-list enforcement (`tenant.verification`)
+
+### 3) Pluggable storage strategies
+
+`storage.strategy` supports:
+
+- `FILE`
+- `FILE_PER_DATE`
+- `FILE_PER_YEAR_DATE`
+- `FILE_PER_YEAR_MONTH`
+- `FILE_PER_YEAR_MONTH_DAY`
+- `FILE_PER_YEAR_MONTH_DATE`
+
+### 4) Monetization-ready controls
+
+- optional API key enforcement (`api.key.verification=true`)
+- per-tenant storage quota (`tenant.storage.quota.bytes`)
+- rolling 24-hour upload rate limit (`tenant.upload.limit.per.day`)
+- usage event tracking for upload/download activity (`UsageEvent`)
+
+## Technology Stack
+
+- Java 21
+- Spring Boot 4.0.5
+- Spring Web + Spring Data JPA
+- H2 (default local DB) and PostgreSQL driver
+- springdoc OpenAPI UI
+- Log4j2
+- Maven
 
 ## Quick Start
 
 ### Prerequisites
 
-This project currently targets:
+- Java 21+
+- Maven 3.9+
 
-- **Java 8**
-- **Maven**
-- **A supported database configuration** such as H2 or PostgreSQL
-
-### Default local runtime
-
-The current default configuration in `src/main/resources/application.properties` uses:
-
-- **Port:** `8081`
-- **Database:** file-based H2 database at `./data/db`
-- **Database user:** `sa`
-- **Database password:** `password`
-- **File storage root:** `C:/filessssss/file-db`
-- **Swagger UI:** `http://localhost:8081/swagger-ui.html`
-- **H2 console:** `http://localhost:8081/h2-console/`
-
-> For anything beyond local development, update `file.db.location` to a valid path for your environment.
-
-### Build the project
+### Build
 
 ```bash
 mvn clean package
 ```
 
-### Run the application
+### Run
 
 ```bash
 java -jar target/file-management-system-1.0.7.jar
 ```
 
-After startup, you can open:
+### Local endpoints
 
-- `http://localhost:8081/swagger-ui.html`
-- `http://localhost:8081/h2-console/`
+- API docs (springdoc): `http://localhost:8081/swagger-ui/index.html`
+- API docs (compat redirect in many setups): `http://localhost:8081/swagger-ui.html`
+- H2 console: `http://localhost:8081/h2-console/`
 
-## Functional Overview
+## Default Runtime Configuration
+
+From `src/main/resources/application.properties`:
+
+- `server.port=8081`
+- `spring.datasource.url=jdbc:h2:file:./data/db-v2;AUTO_SERVER=TRUE`
+- `spring.datasource.username=sa`
+- `spring.datasource.password=password`
+- `file.db.location=C:/filessssss/file-db`
+- `storage.strategy=FILE`
+- `file.id.type=` (empty means UUID default)
+- `api.key.verification=false`
+- `tenant.storage.quota.bytes=1073741824`
+- `tenant.upload.limit.per.day=10000`
+
+## API Surface
 
 ### Upload endpoints
-The application exposes these upload routes:
 
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 | --- | --- | --- |
-| `POST` | `/uploadNewFile/{tenant}` | Upload a new file for a tenant |
-| `POST` | `/uploadByTenantAndFileId/{tenant}/{fileId}` | Upload a file with a provided file ID |
-| `POST` | `/uploadNewFile/{fileId}/{tenant}` | Upload a new file with explicit file ID and tenant |
-| `POST` | `/uploadMultipartFile/{fileId}/{tenant}` | Upload multipart content for a file ID |
-| `POST` | `/upload/{fileId}/{tenant}` | Upload byte-array content |
-| `POST` | `/upload/{fileId}/{directory}/{tenant}` | Upload byte-array content into a specific directory |
+| `POST` | `/uploadNewFile/{tenant}` | Upload new file with generated ID |
+| `POST` | `/uploadByTenantAndFileId/{tenant}/{fileId}` | Upload with client-provided ID |
+| `POST` | `/uploadNewFile/{fileId}/{tenant}` | Upload with explicit file ID and tenant |
+| `POST` | `/uploadMultipartFile/{fileId}/{tenant}` | Multipart upload variant |
+| `POST` | `/upload/{fileId}/{tenant}` | Raw byte-array upload |
+| `POST` | `/upload/{fileId}/{directory}/{tenant}` | Raw upload with custom directory segment |
 
 ### Download endpoints
 
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 | --- | --- | --- |
-| `GET` | `/download/{fileId}` | Download a file by ID |
-| `GET` | `/download/{fileId}/{tenant}` | Download a file by ID with tenant verification |
+| `GET` | `/download/{fileId}` | Download by file ID |
+| `GET` | `/download/{fileId}/{tenant}` | Download with tenant validation |
 
-## API Examples
+### API key management endpoints
 
-### Upload a file (multipart)
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/admin/apikey/{tenant}` | Generate API key |
+| `GET` | `/admin/apikey/{tenant}` | List active API keys |
+| `DELETE` | `/admin/apikey/{tenant}` | Revoke all tenant keys |
 
-Upload a file for a specific tenant. The service generates a file ID automatically.
-
-```bash
-curl -X POST http://localhost:8081/uploadNewFile/tenant1 \
-  -F "file=@/path/to/document.pdf"
-```
-
-**Response `200 OK`:**
-
-```json
-{
-  "fileId": "3f7a1b2c-9d4e-4f6a-bf12-0e8d5c6a7f3e",
-  "tenant": "tenant1",
-  "fileName": "document.pdf"
-}
-```
-
----
-
-### Upload a file with a specific file ID (multipart)
-
-Supply your own file ID when the calling system already has one.
+## Example Requests
 
 ```bash
-curl -X POST http://localhost:8081/uploadByTenantAndFileId/tenant1/my-custom-id-001 \
-  -F "file=@/path/to/report.xlsx"
+curl -X POST http://localhost:8081/uploadNewFile/tenant1 -F "file=@document.pdf"
+curl -X GET http://localhost:8081/download/my-id --output downloaded.pdf
+curl -X POST http://localhost:8081/admin/apikey/tenant1
+curl -X GET http://localhost:8081/download/my-id -H "X-API-Key: fms-..." --output downloaded.pdf
 ```
 
-**Response `200 OK`:**
+## Logging
 
-```json
-{
-  "fileId": "my-custom-id-001",
-  "tenant": "tenant1",
-  "fileName": "report.xlsx"
-}
-```
+The project uses Log4j2 with `src/main/resources/log4j2-spring.xml`.
 
----
-
-### Upload raw byte-array content
-
-Use this when the file content is already in binary form (for example, a generated PDF).
-
-```bash
-curl -X POST http://localhost:8081/upload/my-file-id-123/tenant1 \
-  -H "Content-Type: application/octet-stream" \
-  --data-binary @/path/to/generated.pdf
-```
-
-**Response `200 OK`:**
-
-```
-my-file-id-123
-```
-
----
-
-### Download a file by ID
-
-```bash
-curl -X GET http://localhost:8081/download/3f7a1b2c-9d4e-4f6a-bf12-0e8d5c6a7f3e \
-  --output downloaded-document.pdf
-```
-
-**Response `200 OK`:** binary file content streamed to the output file.
-
----
-
-### Download a file by ID with tenant validation
-
-```bash
-curl -X GET http://localhost:8081/download/3f7a1b2c-9d4e-4f6a-bf12-0e8d5c6a7f3e/tenant1 \
-  --output downloaded-document.pdf
-```
-
-**Response `200 OK`:** binary file content streamed to the output file.
-
-> Full interactive documentation for all endpoints is available at `http://localhost:8081/swagger-ui.html` once the application is running.
-
-## Storage Strategy
-
-The `storage.strategy` property controls how files are organized under `file.db.location`.
-
-| Strategy | Directory layout |
-| --- | --- |
-| `FILE` | `${file.db.location}/${tenant}/${fileId}` |
-| `FILE_PER_DATE` | `${file.db.location}/${tenant}/${date}/${fileId}` |
-| `FILE_PER_YEAR_DATE` | `${file.db.location}/${tenant}/${year}/${date}/${fileId}` |
-| `FILE_PER_YEAR_MONTH` | `${file.db.location}/${tenant}/${year}/${month}/${fileId}` |
-| `FILE_PER_YEAR_MONTH_DAY` | `${file.db.location}/${tenant}/${year}/${month}/${day}/${fileId}` |
-| `FILE_PER_YEAR_MONTH_DATE` | `${file.db.location}/${tenant}/${year}/${month}/${date}/${fileId}` |
-
-This makes it easy to adapt storage layout to operational needs such as cleanup, browsing, and filesystem scale.
-
-## Configuration
-
-The main configuration file is `src/main/resources/application.properties`.
-
-### Database options
-
-#### H2
-No separate installation is required for local development.
-
-The active default setup uses:
-
-- `spring.datasource.url=jdbc:h2:file:./data/db`
-- `spring.datasource.username=sa`
-- `spring.datasource.password=password`
-
-Two modes are present in configuration:
-
-- **in-memory** mode (commented out)
-- **file-based** mode (active by default)
-
-H2 Console is available at:
-
-```text
-http://localhost:8081/h2-console/
-```
-
-#### MySQL
-The README historically includes MySQL setup guidance, and the configuration file contains commented MySQL properties:
-
-- `spring.datasource.url=jdbc:mysql://localhost:3306/fms`
-- `spring.datasource.username=root`
-- `spring.datasource.password=root`
-
-Example database creation command:
-
-```sql
-CREATE DATABASE fms;
-```
-
-If you run into MySQL 8 authentication issues, the legacy compatibility command below may help depending on your environment:
-
-```sql
-ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PASSWORD}';
-```
-
-> Note: the current `pom.xml` does not include a MySQL connector dependency, so MySQL support is not ready out of the box without adding the corresponding driver.
-
-#### PostgreSQL
-A PostgreSQL driver is already included in the build.
-
-The configuration file contains commented PostgreSQL settings for a local instance:
-
-- `spring.datasource.url=jdbc:postgresql://localhost:5432/test`
-- `spring.datasource.username=test`
-- `spring.datasource.password=test`
-
-Legacy setup commands preserved from the original README:
-
-```bash
-createuser -U postgres -s Progress
-```
-
-Optional restore example:
-
-```bash
-pg_restore -d DATABASE_NAME < PATH/BACKUP_FILE_NAME.sql
-```
-
-### Tenant configuration
-
-The service supports tenant allow-list configuration through:
-
-- `tenant.list`
-- `tenant.verification`
-
-When tenant verification is disabled, the application can operate without enforcing the configured allow-list.
-
-### File cleanup configuration
-
-The current properties file also includes cleanup-related settings:
-
-- `file.cleanup.age=100`
-- `file.cleanup.age.type=DAY`
-
-### Multipart configuration
-
-The service is configured for large file uploads with properties such as:
-
-- `spring.servlet.multipart.max-file-size=100MB`
-- `spring.servlet.multipart.max-request-size=100MB`
-- `server.tomcat.max-http-post-size=-1`
+- console logging enabled
+- rolling file appender enabled
+- base log folder property: `APP_LOG_ROOT` (default in config: `/root/app/logs`)
+- active levels in `application.properties`:
+  - `logging.level.root=info`
+  - `logging.level.org.springframework.web=info`
+  - `logging.level.org.hibernate=error`
 
 ## Testing
-
-All available unit and integration tests are located in `src/test/java`.
-
-Run the test suite with:
 
 ```bash
 mvn test
 ```
 
-## Deployment
-
-Once the JAR is built, the application can be started with Java.
-
-### Standard run command
+Run one test class:
 
 ```bash
-java -jar target/file-management-system-1.0.7.jar
+mvn test -Dtest=FileStorageStrategyFactoryTest
 ```
 
-### External configuration
+## Deployment Notes
 
-You can also run the application with an external properties file:
+Run with external configuration:
 
 ```bash
 java -jar target/file-management-system-1.0.7.jar --spring.config.location=/path/to/application.properties
 ```
 
-### Linux deployment notes
+For production-like deployments, typically:
 
-If you deploy on Linux, a practical folder layout can be:
-
-1. `/app` - application home
-2. `/app/log` - log files
-3. `/app/config` - configuration files
-4. `/app/file-db` - physical file storage
-5. `/app/test-db` - test or temporary storage
-
-Example background start command:
-
-```bash
-nohup java -jar file-management-system-1.0.7.jar --spring.config.location=/app/config/application.properties &
-```
-
-Example command to inspect recent log lines:
-
-```bash
-tail -n NUM_OF_RECORDS FILE_NAME
-```
-
-### Windows deployment notes
-
-The project was developed on Windows and can also be started with an external config file.
-
-Example:
-
-```bash
-java -jar /projects/app/file-management-system-1.0.7.jar --spring.config.location=/projects/app/config/application.properties
-```
-
-## API Documentation
-
-Swagger UI is available for testing and exploration:
-
-```text
-http://localhost:8081/swagger-ui.html
-```
-
-## Built With
-
-This project currently uses the following core technologies from the codebase and build file:
-
-- [Java](https://www.java.com/en/download/)
-- [Spring Boot](https://spring.io/projects/spring-boot)
-- [Spring Web](https://spring.io/projects/spring-framework)
-- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-- [H2](https://www.h2database.com/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Swagger / Springfox](https://springfox.github.io/springfox/)
-- [Maven](https://maven.apache.org/)
-- [Log4j2](https://logging.apache.org/log4j/2.x/)
+- use PostgreSQL
+- set a valid writable `file.db.location`
+- configure a writable log path in `log4j2-spring.xml`
+- keep `api.key.verification`, quotas, and limits enabled as required by your pricing model
 
 ## Contributing
 
-Please read `CONTRIBUTING.md` for guidelines on contributing, pull requests, and collaboration.
+Please read `CONTRIBUTING.md`.
 
-## Versioning
+## Changelog
 
-The project follows Semantic Versioning where practical. The current version declared in `pom.xml` is `1.0.7`.
-
-## Maintainer
-
-This project was authored by **Sergiu Drahnea**.
-
-LinkedIn:
-
-- https://www.linkedin.com/in/sergiu-drahnea/
+See `CHANGELOG.md` for release history.
 
 ## License
 
-This project is released under the **MIT License**. See `LICENSE` for details.
+MIT License - see `LICENSE`.
 
-## Support the Project
+## Funding
 
-If this project has been useful to you, you can support it through the following channels preserved from the original README:
-
-- [PayPal](https://www.paypal.me/sdrahnea)
-- [EGLD](http://elrond.com/) - `erd1t3t5m8v7862asdh48nq820shsmlmuw9jpm87qw25cvch7djpkapskgq4es`
-- [TROY](https://troytrade.com/) - Address: `bnb136ns6lfw4zs5hg4n85vdthaad7hq5m4gtkgf23`, Memo: `100079140`
-- [PHB](https://phoenix.global/) - Address: `bnb136ns6lfw4zs5hg4n85vdthaad7hq5m4gtkgf23`, Memo: `100079140`
-- [HOT](https://holochain.org/) - Address: `0x1ebfc62e2510f0a0558568223d1d101d0cf074b2`
-- [VET](https://www.vechain.org/) - Address: `0x1ebfc62e2510f0a0558568223d1d101d0cf074b2`
-- [TRX](https://tron.network/) - Address: `TRe8xSkGqpS73Nhk6bnvW34aiJoRTmZs8N`
-- [BTT](https://www.bittorrent.com/token/btt/) - Address: `TRe8xSkGqpS73Nhk6bnvW34aiJoRTmZs8N`
+- GitHub Sponsors: https://github.com/sponsors/sdrahnea
+- PayPal: https://www.paypal.me/sdrahnea
