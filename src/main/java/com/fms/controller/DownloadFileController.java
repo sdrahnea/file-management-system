@@ -2,8 +2,8 @@ package com.fms.controller;
 
 import com.fms.service.DownloadFileService;
 import com.fms.service.TenantService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@Api("Download File Controller API")
+@Tag(name = "Download File Controller API")
 public class DownloadFileController {
 
     private final DownloadFileService downloadFileService;
@@ -29,7 +29,7 @@ public class DownloadFileController {
     }
 
     @GetMapping(value = "download/{fileId}")
-    @ApiOperation("download functionality")
+    @Operation(summary = "download functionality")
     @ResponseBody
     public byte[] download(@PathVariable String fileId) {
         log.info("Receive request to download document id: {}", fileId);
@@ -38,7 +38,7 @@ public class DownloadFileController {
     }
 
     @GetMapping(value = "download/{fileId}/{tenant}")
-    @ApiOperation("download functionality by tenant")
+    @Operation(summary = "download functionality by tenant")
     @ResponseBody
     public byte[] downloadByTenant(@PathVariable String fileId, @PathVariable String tenant) {
         log.info("Receive request to download document by (id, tenant): {},  {}", fileId, tenant);

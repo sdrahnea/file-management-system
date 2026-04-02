@@ -6,12 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Created by sdrahnea
  */
-@EnableSwagger2
 @EnableAutoConfiguration
 @SpringBootApplication
 @EnableJpaRepositories

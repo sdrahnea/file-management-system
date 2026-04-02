@@ -3,8 +3,8 @@ package com.fms.controller;
 import com.fms.model.CreateFileResponseDTO;
 import com.fms.service.TenantService;
 import com.fms.service.UploadFileService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Slf4j
 @RestController
-@Api("Download File Controller API")
+@Tag(name = "Upload File Controller API")
 public class UploadFileController {
 
     private final UploadFileService uploadFileService;
@@ -30,7 +30,7 @@ public class UploadFileController {
     }
 
     @PostMapping("uploadNewFile/{tenant}")
-    @ApiOperation("upload new file by tenant")
+    @Operation(summary = "upload new file by tenant")
     public CreateFileResponseDTO upload(@PathVariable String tenant,
                                         @RequestPart("file") MultipartFile multipartFile) {
         log.info("Receive request to upload file for tenant: {}", tenant);
@@ -41,7 +41,7 @@ public class UploadFileController {
     }
 
     @PostMapping("uploadByTenantAndFileId/{tenant}/{fileId}")
-    @ApiOperation("upload new file by tenant and file id values")
+    @Operation(summary = "upload new file by tenant and file id values")
     public CreateFileResponseDTO uploadFileByTenantAndFileId(@PathVariable String tenant,
                                                              @PathVariable String fileId,
                                                              @RequestPart("file") MultipartFile multipartFile) {
@@ -51,7 +51,7 @@ public class UploadFileController {
     }
 
     @PostMapping("uploadNewFile/{fileId}/{tenant}")
-    @ApiOperation("upload new file by file id and tenant values")
+    @Operation(summary = "upload new file by file id and tenant values")
     public String uploadNewFile(@PathVariable String fileId,
                                 @PathVariable String tenant,
                                 @RequestPart("file") MultipartFile multipartFile) {
@@ -61,7 +61,7 @@ public class UploadFileController {
     }
 
     @PostMapping("uploadMultipartFile/{fileId}/{tenant}")
-    @ApiOperation("upload functionality")
+    @Operation(summary = "upload functionality")
     public String upload(@PathVariable String fileId,
                          @PathVariable String tenant,
                          @RequestPart("file") MultipartFile multipartFile) {
@@ -73,7 +73,7 @@ public class UploadFileController {
     }
 
     @PostMapping("upload/{fileId}/{tenant}")
-    @ApiOperation("upload functionality in case of byte array")
+    @Operation(summary = "upload functionality in case of byte array")
     public String upload(@PathVariable String fileId,
                          @PathVariable String tenant,
                          @RequestBody ByteArrayResource byteArrayResource) {
@@ -85,7 +85,7 @@ public class UploadFileController {
     }
 
     @PostMapping("upload/{fileId}/{directory}/{tenant}")
-    @ApiOperation("upload functionality in case of byte array and directory name")
+    @Operation(summary = "upload functionality in case of byte array and directory name")
     public String upload(@PathVariable String fileId,
                          @PathVariable String directory,
                          @PathVariable String tenant,
