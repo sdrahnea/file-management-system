@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FMS — Admin Dashboard</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"/>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+
+    <style>
+        :root {
+            --sidebar-width: 240px;
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        /* ── Sidebar ─────────────────────────────────────────── */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: #1e293b;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem 1.25rem 1rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar-brand .brand-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            letter-spacing: .03em;
+        }
+
+        .sidebar-brand .brand-sub {
+            font-size: .7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .sidebar-nav {
+            padding: 1rem .75rem;
+            flex: 1;
+        }
+
+        .nav-label {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: #64748b;
+            padding: .5rem .5rem .25rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .55rem .75rem;
+            border-radius: .5rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: .88rem;
+            transition: background .15s, color .15s;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+            width: 1.2rem;
+            text-align: center;
+        }
+
+        /* ── Top bar ─────────────────────────────────────────── */
+        .topbar {
+            margin-left: var(--sidebar-width);
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: .75rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* ── Main content ────────────────────────────────────── */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 1.75rem;
+        }
+
+        /* ── Stat cards ──────────────────────────────────────── */
+        .stat-card {
+            background: #fff;
+            border-radius: .75rem;
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: box-shadow .2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        }
+
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: .65rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            font-size: .78rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        /* ── Tables ──────────────────────────────────────────── */
+        .section-card {
+            background: #fff;
+            border-radius: .75rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: .9rem;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .table-responsive { overflow-x: auto; }
+
+        .table thead th {
+            background: #f8fafc;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: #64748b;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .table tbody tr:hover { background: #f8fafc; }
+
+        .table td {
+            font-size: .83rem;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* ── Badges ──────────────────────────────────────────── */
+        .badge-upload {
+            background: #dcfce7;
+            color: #15803d;
+            font-size: .7rem;
+            padding: .2rem .55rem;
+            border-radius: 99px;
+            font-weight: 600;
+        }
+
+        .badge-download {
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: .7rem;
+            padding: .2rem .55rem;
+            border-radius: 99px;
+            font-weight: 600;
+        }
+
+        .tenant-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: .7rem;
+            padding: .2rem .55rem;
+            border-radius: 99px;
+            font-weight: 600;
+        }
+
+        /* ── Tab pills ───────────────────────────────────────── */
+        .nav-pills .nav-link {
+            font-size: .82rem;
+            padding: .35rem .85rem;
+            border-radius: .45rem;
+            color: #475569;
+        }
+
+        .nav-pills .nav-link.active {
+            background: var(--primary);
+        }
+
+        /* ── Filter bar ──────────────────────────────────────── */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar select,
+        .filter-bar input {
+            font-size: .83rem;
+            border-radius: .45rem;
+            border: 1px solid #cbd5e1;
+            padding: .35rem .75rem;
+            color: #334155;
+        }
+
+        /* ── Scrollable tables (optional capped height) ──────── */
+        .table-scroll {
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        /* ── Empty state ─────────────────────────────────────── */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: .75rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-name"><i class="bi bi-server me-2"></i>FMS</div>
+        <div class="brand-sub">File Management System</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-label">Main</div>
+        <a class="sidebar-link active" th:href="@{/ui/dashboard}">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a class="sidebar-link" th:href="@{/swagger-ui/index.html}" target="_blank">
+            <i class="bi bi-braces"></i> API Docs
+        </a>
+        <div class="nav-label mt-3">Quick Links</div>
+        <a class="sidebar-link" th:href="@{/ui/dashboard(tenant='tenant1')}">
+            <i class="bi bi-person-badge"></i> tenant1
+        </a>
+        <a class="sidebar-link" th:href="@{/ui/dashboard(tenant='tenant2')}">
+            <i class="bi bi-person-badge"></i> tenant2
+        </a>
+        <a class="sidebar-link" th:href="@{/ui/dashboard(tenant='tenant3')}">
+            <i class="bi bi-person-badge"></i> tenant3
+        </a>
+    </nav>
+    <div style="padding: .75rem 1.25rem; border-top: 1px solid #334155; font-size:.68rem; color:#475569;">
+        FMS v1.0.7 &bull; Spring Boot 4
+    </div>
+</aside>
+
+<!-- ═══════════════════════ TOP BAR ═══════════════════════ -->
+<header class="topbar">
+    <span class="topbar-title">
+        <i class="bi bi-speedometer2 me-2 text-primary"></i>Admin Dashboard
+    </span>
+    <div class="filter-bar">
+        <form method="get" th:action="@{/ui/dashboard}" class="d-flex align-items-center gap-2">
+            <label for="tenantFilter" class="text-muted" style="font-size:.82rem;">Tenant:</label>
+            <select id="tenantFilter" name="tenant" onchange="this.form.submit()" class="form-select form-select-sm" style="min-width:140px;">
+                <option value="">All tenants</option>
+                <option th:each="t : ${tenants}"
+                        th:value="${t}"
+                        th:text="${t}"
+                        th:selected="${t == selectedTenant}"></option>
+            </select>
+            <a th:href="@{/ui/dashboard}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </form>
+        <button class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+    </div>
+</header>
+
+<!-- ═══════════════════════ MAIN ═══════════════════════════ -->
+<main class="main-content">
+
+    <!-- ── Stat cards ────────────────────────────────────── -->
+    <div class="row g-3 mb-4">
+
+        <!-- Total Files -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#eef2ff; color:#4f46e5;">
+                    <i class="bi bi-files"></i>
+                </div>
+                <div>
+                    <div class="stat-value" th:text="${totalFiles}">0</div>
+                    <div class="stat-label">Total Files</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Uploads -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#dcfce7; color:#16a34a;">
+                    <i class="bi bi-cloud-upload"></i>
+                </div>
+                <div>
+                    <div class="stat-value" th:text="${totalUploads}">0</div>
+                    <div class="stat-label">Uploads</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Downloads -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#dbeafe; color:#2563eb;">
+                    <i class="bi bi-cloud-download"></i>
+                </div>
+                <div>
+                    <div class="stat-value" th:text="${totalDownloads}">0</div>
+                    <div class="stat-label">Downloads</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Storage Used -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fef9c3; color:#ca8a04;">
+                    <i class="bi bi-hdd"></i>
+                </div>
+                <div>
+                    <div class="stat-value"
+                         th:text="${#numbers.formatDecimal(totalStorageBytes / 1048576.0, 1, 2) + ' MB'}">0 MB</div>
+                    <div class="stat-label">Storage Used</div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /stat cards -->
+
+    <!-- ── Tabbed tables ──────────────────────────────────── -->
+    <ul class="nav nav-pills mb-3" id="dashTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabFiles" type="button">
+                <i class="bi bi-file-earmark me-1"></i>Files
+                <span class="badge bg-secondary ms-1" th:text="${totalFiles}">0</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabEvents" type="button">
+                <i class="bi bi-activity me-1"></i>Usage Events
+                <span class="badge bg-secondary ms-1" th:text="${#lists.size(events)}">0</span>
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- ── FILES TAB ──────────────────────────────────── -->
+        <div class="tab-pane fade show active" id="tabFiles">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-title">
+                        <i class="bi bi-folder2-open text-primary"></i> Stored Files
+                    </span>
+                    <span style="font-size:.78rem; color:#94a3b8;"
+                          th:text="${totalFiles + ' record(s)'}"></span>
+                </div>
+
+                <!-- search -->
+                <div class="px-3 py-2 border-bottom bg-light">
+                    <input type="text" id="fileSearch" class="form-control form-control-sm"
+                           placeholder="Search by file ID, tenant, content type…"
+                           oninput="filterTable('fileTable', this.value)"
+                           style="max-width:350px;"/>
+                </div>
+
+                <div class="table-scroll table-responsive">
+                    <table class="table table-hover mb-0" id="fileTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>File ID</th>
+                            <th>Tenant</th>
+                            <th>Content Type</th>
+                            <th>Size</th>
+                            <th>Path</th>
+                            <th>Checksum</th>
+                            <th>Created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- empty state -->
+                        <tr th:if="${#lists.isEmpty(files)}">
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <i class="bi bi-inbox"></i>
+                                    No files found in the database.
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- rows -->
+                        <tr th:each="file, stat : ${files}">
+                            <td class="text-muted" th:text="${stat.count}"></td>
+                            <td>
+                                <code style="font-size:.78rem;" th:text="${file.fileId}"></code>
+                            </td>
+                            <td>
+                                <span class="tenant-badge" th:text="${file.tenant}"></span>
+                            </td>
+                            <td th:text="${file.contentType != null ? file.contentType : '—'}"></td>
+                            <td th:text="${file.fileSizeBytes != null
+                                    ? #numbers.formatDecimal(file.fileSizeBytes / 1024.0, 1, 2) + ' KB'
+                                    : '—'}"></td>
+                            <td>
+                                <span style="max-width:260px; display:inline-block; overflow:hidden; text-overflow:ellipsis;"
+                                      title="Full path"
+                                      th:title="${file.path}"
+                                      th:text="${file.path}"></span>
+                            </td>
+                            <td>
+                                <span style="font-size:.72rem; color:#94a3b8;"
+                                      th:text="${file.checksum != null ? file.checksum : '—'}"></span>
+                            </td>
+                            <td th:text="${#dates.format(file.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /files tab -->
+
+        <!-- ── EVENTS TAB ─────────────────────────────────── -->
+        <div class="tab-pane fade" id="tabEvents">
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-title">
+                        <i class="bi bi-activity text-primary"></i> Usage Events
+                    </span>
+                    <span style="font-size:.78rem; color:#94a3b8;"
+                          th:text="${#lists.size(events) + ' record(s)'}"></span>
+                </div>
+
+                <!-- search -->
+                <div class="px-3 py-2 border-bottom bg-light">
+                    <input type="text" id="eventSearch" class="form-control form-control-sm"
+                           placeholder="Search by file ID, tenant, event type…"
+                           oninput="filterTable('eventTable', this.value)"
+                           style="max-width:350px;"/>
+                </div>
+
+                <div class="table-scroll table-responsive">
+                    <table class="table table-hover mb-0" id="eventTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Event Type</th>
+                            <th>Tenant</th>
+                            <th>File ID</th>
+                            <th>Size</th>
+                            <th>Event Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- empty state -->
+                        <tr th:if="${#lists.isEmpty(events)}">
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="bi bi-bar-chart"></i>
+                                    No usage events recorded yet.
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- rows -->
+                        <tr th:each="evt, stat : ${events}">
+                            <td class="text-muted" th:text="${stat.count}"></td>
+                            <td>
+                                <span th:if="${evt.eventType.name() == 'UPLOAD'}"   class="badge-upload">UPLOAD</span>
+                                <span th:if="${evt.eventType.name() == 'DOWNLOAD'}" class="badge-download">DOWNLOAD</span>
+                            </td>
+                            <td>
+                                <span class="tenant-badge" th:text="${evt.tenant}"></span>
+                            </td>
+                            <td>
+                                <code style="font-size:.78rem;" th:text="${evt.fileId}"></code>
+                            </td>
+                            <td th:text="${evt.fileSizeBytes != null
+                                    ? #numbers.formatDecimal(evt.fileSizeBytes / 1024.0, 1, 2) + ' KB'
+                                    : '—'}"></td>
+                            <td th:text="${#dates.format(evt.eventDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /events tab -->
+
+    </div><!-- /tab-content -->
+
+</main><!-- /main -->
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmqOG8byBRMwWHOGAYp+kBuKnqiI"
+        crossorigin="anonymous"></script>
+
+<script>
+    /**
+     * Live client-side search – hides rows that don't match the query.
+     */
+    function filterTable(tableId, query) {
+        const q = query.toLowerCase();
+        const rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = (!q || text.includes(q)) ? '' : 'none';
+        });
+    }
+</script>
+</body>
+</html>
+
